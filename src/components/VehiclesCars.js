@@ -1,12 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 // import defaultPhoto from '../assets/Images/popular-default.jpg';
 import { API_URL } from '@env';
 
 const VehiclesCars = ({ navigation, cars }) => {
-  console.log('CARS', cars);
+  const numberToRupiah = bilangan => {
+    let separator = '';
+    let number_string = bilangan;
+    if (typeof bilangan === 'number') {
+      number_string = bilangan.toString();
+    }
+    let sisa = number_string.length % 3,
+      rupiah = number_string.substr(0, sisa),
+      ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+    if (ribuan) {
+      separator = sisa ? '.' : '';
+      rupiah += separator + ribuan.join('.');
+    }
+    return rupiah;
+  };
   return (
     <ScrollView>
       <View
@@ -46,7 +61,7 @@ const VehiclesCars = ({ navigation, cars }) => {
           const photo = JSON.parse(item.photo);
           // console.log('PHOTO', API_URL + photo[0]);
           return (
-            <View
+            <TouchableOpacity
               style={{
                 // borderWidth: 1,
                 flexDirection: 'row',
@@ -55,7 +70,7 @@ const VehiclesCars = ({ navigation, cars }) => {
                 alignItems: 'center',
               }}
               key={idx}
-              onStartShouldSetResponder={() => {
+              onPress={() => {
                 navigation.navigate('DetailVehicleScreen', { id: item.id });
               }}
             >
@@ -130,10 +145,10 @@ const VehiclesCars = ({ navigation, cars }) => {
                     color: 'black',
                   }}
                 >
-                  {`Rp. ${item.price} /day`}
+                  {`Rp. ${numberToRupiah(item.price)} /day`}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           );
         })}
     </ScrollView>

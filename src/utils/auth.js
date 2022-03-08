@@ -12,6 +12,7 @@ export const loginApi = body => {
 };
 
 export const logoutApi = config => {
+  console.log('CONFIG', config);
   const url = API_URL + '/auth/logout';
   return axios.delete(url, config);
 };

@@ -9,7 +9,7 @@ const NotLogin = ({ navigation }) => {
     <View
       style={{
         // flex: 1,
-        backgroundColor: '#FFCD61',
+        backgroundColor: '#ffF',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
@@ -30,7 +30,7 @@ const NotLogin = ({ navigation }) => {
 
       <TouchableOpacity
         style={{
-          backgroundColor: '#fff',
+          backgroundColor: '#FFCD61',
           borderRadius: 10,
           width: '90%',
           height: 70,

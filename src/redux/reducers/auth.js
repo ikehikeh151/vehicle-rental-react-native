@@ -45,8 +45,7 @@ const authReducer = (prevState = initialState, action) => {
 
       return {
         ...prevState,
-        isPending: false,
-        isRejected: true,
+
         err,
       };
 

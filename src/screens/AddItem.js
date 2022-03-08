@@ -102,7 +102,8 @@ const AddItem = ({ navigation }) => {
       .then(res => {
         console.log(res);
         if (res) {
-          return alert('successfuly add vehicle');
+          alert('successfuly add vehicle');
+          return navigation.navigate('HomeTab');
         }
       })
       .catch(err => {
@@ -158,7 +159,7 @@ const AddItem = ({ navigation }) => {
             alignItems: 'center',
           }}
           onPress={() => {
-            // setImgSelected('');
+            setPhoto(null);
             setName('');
             setPrice('');
             setDescription('');

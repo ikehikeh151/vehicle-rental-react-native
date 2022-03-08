@@ -60,6 +60,7 @@ const TabProfile = () => {
       <Stack.Screen name="ProfileScreen" component={Profile} />
       <Stack.Screen name="FavoriteScreen" component={DetailVehicle} />
       <Stack.Screen name="UpdateProfileScreen" component={DetailVehicle} />
+      <Stack.Screen name="NotLoginScreen" component={NotLogin} />
     </Stack.Navigator>
   );
 };

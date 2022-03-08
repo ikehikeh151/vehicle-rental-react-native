@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react-native/no-inline-styles */
 import {
   Text,
   View,
@@ -12,6 +14,7 @@ import bgLogin from '../assets/Images/bg-login.png';
 import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../redux/actions/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import ModalComponent from '../components/Modal';
 
 const { height } = Dimensions.get('window');
@@ -19,6 +22,7 @@ const { height } = Dimensions.get('window');
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
+  const { token } = auth.authUser;
   const [body, setBody] = useState({
     email: '',
     password: '',
@@ -50,7 +54,14 @@ const Login = ({ navigation }) => {
     if (auth.isFulfilled) {
       return navigation.replace('TabStack');
     }
-  }, [auth, navigation]);
+
+    if (!token) {
+      AsyncStorage.removeItem('persist:vehical-rental').catch(err => {
+        console.log(err);
+      });
+    }
+  }, [auth, navigation, token]);
+  console.log('ERR', token);
 
   return (
     <ScrollView>
@@ -71,11 +82,36 @@ const Login = ({ navigation }) => {
             onChangeText={getUsername}
           />
           <TextInput
+            secureTextEntry={true}
             placeholder="Password"
             placeholderTextColor="#393939"
             style={styles.input}
             onChangeText={getPassword}
           />
+          <View
+            style={{
+              marginTop: 20,
+              paddingStart: 20,
+              paddingEnd: 20,
+              backgroundColor: 'white',
+              paddingTop: 10,
+              paddingBottom: 10,
+              borderRadius: 5,
+              display: auth.isRejected ? 'flex' : 'none',
+              opacity: 0.7,
+            }}
+          >
+            <Text
+              style={{
+                color: 'red',
+                fontFamily: 'Nunito-Regular',
+                fontWeight: 'bold',
+                fontSize: 14,
+              }}
+            >
+              Wrong Email / Password
+            </Text>
+          </View>
         </View>
         <Text
           style={styles.forgot}
@@ -122,6 +158,7 @@ const styles = StyleSheet.create({
     marginStart: 20,
   },
   text: {
+    color: 'white',
     fontSize: 36,
     fontFamily: 'Roboto-Regular',
     fontWeight: '900',

@@ -9,7 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Loading from '../components/Loading';
@@ -18,7 +18,7 @@ import imgBanner from '../assets/Images/banner-home.png';
 import {
   getVehiclesCarsApi,
   getVehiclesMotorBikeApi,
-  getVeihcleBikeApi,
+  getVehiclesBikeApi,
 } from '../utils/vehicles';
 
 const Home = ({ navigation }) => {
@@ -29,8 +29,9 @@ const Home = ({ navigation }) => {
   const [bike, setBike] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
+  console.log('ROLE', role);
+
+  const getCars = useCallback(() => {
     getVehiclesCarsApi()
       .then(res => {
         setCars(res.data.result);
@@ -40,17 +41,22 @@ const Home = ({ navigation }) => {
         console.log('ERROR VEHICLE CAR API', err);
         alert('Server error occurred ...');
       });
+  }, []);
 
+  const getMotorBike = useCallback(() => {
     getVehiclesMotorBikeApi()
       .then(res => {
         setMotorBike(res.data.result);
       })
       .catch(err => {
         console.log('ERROR VEHICLE MOTORBIKE API', err);
+
         alert('Server error occurred ...');
       });
+  }, []);
 
-    getVeihcleBikeApi()
+  const getBike = useCallback(() => {
+    getVehiclesBikeApi()
       .then(res => {
         setBike(res.data.result);
       })
@@ -60,8 +66,21 @@ const Home = ({ navigation }) => {
       });
   }, []);
 
-  // console.log(motorBike);
-  // console.log(API_URL);
+  useEffect(() => {
+    setIsLoading(true);
+
+    getBike();
+    getCars();
+    getMotorBike();
+
+    const unsubcribe = navigation.addListener('focus', () => {
+      console.log('Refresh Data ..');
+      getBike();
+      getCars();
+      getMotorBike();
+    });
+    return unsubcribe;
+  }, [navigation, getBike, getCars, getMotorBike]);
 
   return (
     <>
@@ -100,7 +119,7 @@ const Home = ({ navigation }) => {
                   navigation.navigate('AddItemScreen');
                 }}
                 style={
-                  role === 2
+                  role === '2'
                     ? {
                         backgroundColor: '#FFCD61',
                         height: 54,
@@ -108,6 +127,7 @@ const Home = ({ navigation }) => {
                         alignItems: 'center',
                         marginTop: 140,
                         borderRadius: 10,
+                        display: 'flex',
                       }
                     : {
                         backgroundColor: '#FFCD61',
@@ -199,6 +219,8 @@ const Home = ({ navigation }) => {
                         borderRadius: 15,
                         marginRight: 20,
                         overflow: 'hidden',
+                        borderWidth: 1,
+                        borderColor: '#393939',
                       }}
                       key={idx}
                       onTouchEnd={() => {
@@ -277,8 +299,8 @@ const Home = ({ navigation }) => {
             <ScrollView horizontal style={{ padding: 20 }}>
               {motorBike.length > 0 &&
                 motorBike.map((item, idx) => {
-                  // console.log('ITEM-MOTORBIKE >>>>', item);
                   const photo = JSON.parse(item.photo);
+                  // console.log('ITEM-MOTORBIKE >>>>', item);
 
                   return (
                     <View

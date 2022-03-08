@@ -11,6 +11,8 @@ const Profile = ({ navigation }) => {
   const token = auth.authUser.token;
   const [isLogin, setIsLogin] = useState(false);
 
+  console.log('TOKEN', token);
+
   useEffect(() => {
     if (token) {
       return setIsLogin(true);

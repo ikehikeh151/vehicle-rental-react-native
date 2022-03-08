@@ -11,7 +11,7 @@ export const getVehiclesPopularApi = () => {
   return axios.get(url);
 };
 
-export const getVeihcleBikeApi = () => {
+export const getVehiclesBikeApi = () => {
   const url = `${API_URL}/vehicles?filter=bike`;
   return axios.get(url);
 };
@@ -45,4 +45,18 @@ export const addVehicleApi = (config, body) => {
   const url = `${API_URL}/vehicles`;
   console.log('CONFIG-UTILS', config);
   return axios.post(url, body, config);
+};
+
+export const editVehicleApi = (token, body, id) => {
+  const url = `${API_URL}/vehicles/${id}`;
+  return axios.patch(url, body, {
+    headers: {
+      'x-access-token': token,
+    },
+  });
+};
+
+export const deleteVehicleAPi = id => {
+  const url = `${API_URL}/vehicles/${id}`;
+  return axios.delete(url);
 };
