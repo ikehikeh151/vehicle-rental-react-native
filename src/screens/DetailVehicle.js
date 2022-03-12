@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable radix */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from 'react';
@@ -21,6 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import defaultPhoto from '../assets/Images/popular-default.jpg';
 import { editVehicleApi, deleteVehicleAPi } from '../utils/vehicles';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const width = Dimensions.get('window').width;
 
@@ -36,9 +38,15 @@ const DetailVehicle = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState('');
+  const [isDateVisible, setIsDateVisible] = useState(false);
+  const [day, setDay] = useState('1');
+  const [selectDate, setSelectDate] = useState('');
+
   const { photo } = vehicle;
   const photoView =
     Object.keys(vehicle).length > 0 ? JSON.parse(photo)[0] : null;
+
+  console.log('ROLE', role);
 
   const numberToRupiah = bilangan => {
     let separator = '';
@@ -92,6 +100,19 @@ const DetailVehicle = ({ navigation, route }) => {
       });
   };
 
+  const handleConfirmDate = date => {
+    const dateLocal = iso8601 => {
+      const date = new Date(iso8601).toString();
+      const newDate = new Date(date);
+      const day = ('0' + newDate.getDate()).slice(-2);
+      const mnth = ('0' + (newDate.getMonth() + 1)).slice(-2);
+      const year = newDate.getFullYear();
+      return [day, mnth, year].join('-');
+    };
+    setSelectDate(dateLocal(date));
+    setIsDateVisible(false);
+  };
+
   useEffect(() => {
     setIsLoading(true);
     getVehicleByIdApi(id)
@@ -103,7 +124,7 @@ const DetailVehicle = ({ navigation, route }) => {
         console.log(err);
       });
   }, [id]);
-
+  // console.log('vehicles-Detail', vehicle);
   return (
     <>
       {isLoading ? (
@@ -219,6 +240,7 @@ const DetailVehicle = ({ navigation, route }) => {
                   justifyContent: 'space-around',
                   alignItems: 'center',
                   width: 70,
+                  height: 37,
                   // borderWidth: 1,
                   backgroundColor: '#F8A170',
                   padding: 5,
@@ -406,77 +428,153 @@ const DetailVehicle = ({ navigation, route }) => {
                 </Text>
               </View>
 
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: 20,
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: 'Poppins-Regular',
-                    fontWeight: '700',
-                    fontSize: 18,
-                    color: '#393939',
-                  }}
-                >
-                  Stock
-                </Text>
-
+              {role === '2' ? (
                 <View
                   style={{
                     flexDirection: 'row',
-                    width: 140,
                     justifyContent: 'space-between',
                     alignItems: 'center',
+                    marginTop: 20,
+                    // borderWidth: 1,
                   }}
                 >
-                  <TouchableOpacity
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 30 / 2,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor: '#FFCD61',
-                    }}
-                    onPress={() => {
-                      setCounter(counter > 0 ? counter - 1 : 0);
-                    }}
-                  >
-                    <Icon name="minus" style={{ color: 'black' }} />
-                  </TouchableOpacity>
-
                   <Text
                     style={{
-                      color: 'black',
                       fontFamily: 'Poppins-Regular',
-                      fontWeight: 'bold',
-                      fontSize: 15,
+                      fontWeight: '700',
+                      fontSize: 18,
+                      color: '#393939',
                     }}
                   >
-                    {!editMode ? vehicle.stock : counter}
+                    Stock
                   </Text>
 
-                  <TouchableOpacity
+                  <View
                     style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 30 / 2,
-                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      width: 140,
+                      justifyContent: 'space-between',
                       alignItems: 'center',
-                      backgroundColor: '#FFCD61',
-                    }}
-                    onPress={() => {
-                      setCounter(counter + 1);
                     }}
                   >
-                    <Icon name="plus" style={{ color: 'black' }} />
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 30 / 2,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#FFCD61',
+                      }}
+                      onPress={() => {
+                        setCounter(counter > 0 ? counter - 1 : 0);
+                      }}
+                    >
+                      <Icon name="minus" style={{ color: 'black' }} />
+                    </TouchableOpacity>
+
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontFamily: 'Poppins-Regular',
+                        fontWeight: 'bold',
+                        fontSize: 15,
+                      }}
+                    >
+                      {!editMode ? vehicle.stock : counter}
+                    </Text>
+
+                    <TouchableOpacity
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 30 / 2,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#FFCD61',
+                      }}
+                      onPress={() => {
+                        setCounter(counter + 1);
+                      }}
+                    >
+                      <Icon name="plus" style={{ color: 'black' }} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
+              ) : (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: 20,
+                    // borderWidth: 1,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-Regular',
+                      fontWeight: '700',
+                      fontSize: 18,
+                      color: '#393939',
+                    }}
+                  >
+                    Select Bikes
+                  </Text>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      width: 140,
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 30 / 2,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#FFCD61',
+                      }}
+                      onPress={() => {
+                        setCounter(counter > 0 ? counter - 1 : 0);
+                      }}
+                    >
+                      <Icon name="minus" style={{ color: 'black' }} />
+                    </TouchableOpacity>
+
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontFamily: 'Poppins-Regular',
+                        fontWeight: 'bold',
+                        fontSize: 15,
+                      }}
+                    >
+                      {counter}
+                    </Text>
+
+                    <TouchableOpacity
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 30 / 2,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#FFCD61',
+                      }}
+                      onPress={() => {
+                        setCounter(counter + 1);
+                      }}
+                    >
+                      <Icon name="plus" style={{ color: 'black' }} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
 
               <View
                 style={{
@@ -561,28 +659,128 @@ const DetailVehicle = ({ navigation, route }) => {
                   </TouchableOpacity>
                 )
               ) : (
-                <TouchableOpacity
-                  style={{
-                    width: '100%',
-                    height: 70,
-                    backgroundColor: '#FFCD61',
-                    marginTop: 20,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 10,
-                  }}
-                >
-                  <Text
+                <>
+                  <View
                     style={{
-                      fontFamily: 'Nunito-Regular',
-                      fontSize: 24,
-                      fontWeight: '800',
-                      color: '#393939',
+                      // borderWidth: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginTop: 20,
                     }}
                   >
-                    Reservation
-                  </Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        width: '60%',
+                        height: 70,
+                        borderRadius: 10,
+                        backgroundColor: '#DFDEDE',
+                        opacity: 0.8,
+                        color: 'black',
+                        justifyContent: 'center',
+                        paddingStart: 20,
+                      }}
+                      onPress={() => {
+                        setIsDateVisible(true);
+                      }}
+                    >
+                      {selectDate.length > 0 ? (
+                        <Text
+                          style={{
+                            fontFamily: 'Nunito-Regular',
+                            fontWeight: '400',
+                            color: '#000',
+                          }}
+                        >
+                          {selectDate}
+                        </Text>
+                      ) : (
+                        <Text
+                          style={{
+                            fontFamily: 'Nunito-Regular',
+                            fontWeight: '400',
+                            color: '#000',
+                          }}
+                        >
+                          Select Date
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                    <DateTimePickerModal
+                      isVisible={isDateVisible}
+                      mode="date"
+                      onConfirm={handleConfirmDate}
+                      onCancel={() => {
+                        setIsDateVisible(false);
+                      }}
+                    />
+
+                    <View
+                      style={{
+                        width: '35%',
+                        height: 70,
+
+                        borderRadius: 10,
+                        backgroundColor: '#DFDEDE',
+                        opacity: 0.8,
+                        color: 'black',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Picker
+                        dropdownIconColor="#000"
+                        selectedValue={day}
+                        style={{
+                          width: '100%',
+                          color: '#000',
+                          borderWidth: 1,
+                        }}
+                        onValueChange={itemValue => {
+                          setDay(itemValue);
+                        }}
+                      >
+                        <Picker.Item label="1 Day" value="1" />
+                        <Picker.Item label="2 Day" value="2" />
+                        <Picker.Item label="3 Day" value="3" />
+                        <Picker.Item label="4 Day" value="4" />
+                        <Picker.Item label="5 Day" value="5" />
+                        <Picker.Item label="6 Day" value="6" />
+                        <Picker.Item label="7 Day" value="7" />
+                      </Picker>
+                    </View>
+                  </View>
+
+                  <TouchableOpacity
+                    style={{
+                      width: '100%',
+                      height: 70,
+                      backgroundColor: '#FFCD61',
+                      marginTop: 20,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 10,
+                    }}
+                    onPress={() => {
+                      navigation.navigate('ReservationScreen', {
+                        vehicles: vehicle,
+                        day: day,
+                        selectDate: selectDate,
+                        qty: counter,
+                      });
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: 'Nunito-Regular',
+                        fontSize: 24,
+                        fontWeight: '800',
+                        color: '#393939',
+                      }}
+                    >
+                      Reservation
+                    </Text>
+                  </TouchableOpacity>
+                </>
               )}
             </View>
           </View>

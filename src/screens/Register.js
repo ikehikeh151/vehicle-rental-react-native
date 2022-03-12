@@ -76,8 +76,8 @@ const Register = ({ navigation }) => {
             }}
           />
           <TextInput
-            secureTextEntry
-            keyboardType="visible-password"
+            secureTextEntry={true}
+            // keyboardType="visible-password"
             returnKeyType="go"
             placeholder="Password"
             placeholderTextColor="#393939"

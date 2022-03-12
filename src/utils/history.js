@@ -5,3 +5,8 @@ export const historyApi = () => {
   const url = API_URL + '/history';
   return axios.get(url);
 };
+
+export const createHistoryApi = body => {
+  const url = API_URL + '/history';
+  return axios.post(url, body);
+};

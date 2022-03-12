@@ -14,20 +14,21 @@ import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Loading from '../components/Loading';
 import imgBanner from '../assets/Images/banner-home.png';
-// import imgProduct from '../assets/Images/category_car.png';
+import imgProduct from '../assets/Images/noImageVehicle.jpeg';
 import {
   getVehiclesCarsApi,
   getVehiclesMotorBikeApi,
   getVehiclesBikeApi,
 } from '../utils/vehicles';
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
   const auth = useSelector(state => state.auth);
   const role = auth.authUser.role;
   const [cars, setCars] = useState([]);
   const [motorBike, setMotorBike] = useState([]);
   const [bike, setBike] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [imgDummy, setImgDummy] = useState(false);
 
   console.log('ROLE', role);
 
@@ -81,6 +82,8 @@ const Home = ({ navigation }) => {
     });
     return unsubcribe;
   }, [navigation, getBike, getCars, getMotorBike]);
+
+  console.log('CARS', cars);
 
   return (
     <>
@@ -210,6 +213,12 @@ const Home = ({ navigation }) => {
                 cars.map((item, idx) => {
                   // console.log('ITEM-CARS >>>>', item);
                   const photo = JSON.parse(item.photo);
+                  const img = API_URL + photo[0];
+                  fetch(img).then(res => {
+                    if (res.status === 404) {
+                      setImgDummy(true);
+                    }
+                  });
 
                   return (
                     <View
@@ -230,7 +239,8 @@ const Home = ({ navigation }) => {
                       }}
                     >
                       <Image
-                        source={{ uri: API_URL + photo[0] }}
+                        onError={() => imgProduct}
+                        source={{ uri: img }}
                         style={{
                           width: undefined,
                           height: undefined,
@@ -310,6 +320,8 @@ const Home = ({ navigation }) => {
                         borderRadius: 15,
                         marginRight: 20,
                         overflow: 'hidden',
+                        borderWidth: 1,
+                        borderColor: '#393939',
                       }}
                       key={idx}
                       onTouchEnd={() => {
@@ -345,7 +357,6 @@ const Home = ({ navigation }) => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-
                 marginTop: 20,
                 width: '90%',
               }}
@@ -405,6 +416,8 @@ const Home = ({ navigation }) => {
                         borderRadius: 15,
                         marginRight: 20,
                         overflow: 'hidden',
+                        borderWidth: 1,
+                        borderColor: '#393939',
                       }}
                       key={idx}
                       onTouchEnd={() => {

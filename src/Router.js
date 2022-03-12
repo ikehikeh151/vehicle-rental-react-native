@@ -15,6 +15,10 @@ import AddItem from './screens/AddItem';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import NotLogin from './screens/NotLogin';
 import CategoryVehicles from './screens/CategoryVehicles';
+import Reservation from './screens/Reservation';
+import OrderDetail from './screens/OrderDetail';
+import FinishPayment from './screens/FinishPayment';
+import DetailHistory from './screens/DetailHistory';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,6 +38,10 @@ const TabHome = () => {
       <Stack.Screen name="AddItemScreen" component={AddItem} />
       <Stack.Screen name="CategoryVehicle" component={CategoryVehicles} />
       <Stack.Screen name="DetailVehicleScreen" component={DetailVehicle} />
+      <Stack.Screen name="ReservationScreen" component={Reservation} />
+      <Stack.Screen name="OrderDetailScreen" component={OrderDetail} />
+      <Stack.Screen name="FinishPaymentScreen" component={FinishPayment} />
+      <Stack.Screen name="HistoryDetailScreen" component={DetailHistory} />
     </Stack.Navigator>
   );
 };
@@ -42,6 +50,7 @@ const TabHistory = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HistoryScreen" component={History} />
+      <Stack.Screen name="HistoryDetailScreen" component={DetailHistory} />
     </Stack.Navigator>
   );
 };
