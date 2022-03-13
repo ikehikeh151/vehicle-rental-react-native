@@ -5,13 +5,24 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import NotLogin from './NotLogin';
 import { logoutAction } from '../redux/actions/auth';
+import { getUserByIdApi } from '../utils/users';
 
 const Profile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
   const token = auth.authUser.token;
   const [isLogin, setIsLogin] = useState(false);
 
-  console.log('TOKEN', token);
+  console.log('AUTH', auth);
+
+  useEffect(() => {
+    getUserByIdApi(token)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
 
   useEffect(() => {
     if (token) {

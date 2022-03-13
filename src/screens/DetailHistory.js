@@ -291,7 +291,7 @@ const DetailHistory = ({ navigation, route }) => {
             borderRadius: 10,
           }}
           onPress={() => {
-            navigation.replace('HistoryScreen');
+            navigation.replace('TabStack');
           }}
         >
           <Text

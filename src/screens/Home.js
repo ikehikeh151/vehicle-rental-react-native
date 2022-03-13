@@ -83,7 +83,7 @@ const Home = ({ navigation, route }) => {
     return unsubcribe;
   }, [navigation, getBike, getCars, getMotorBike]);
 
-  console.log('CARS', cars);
+  // console.log('CARS', cars);
 
   return (
     <>

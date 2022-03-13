@@ -19,6 +19,7 @@ import Reservation from './screens/Reservation';
 import OrderDetail from './screens/OrderDetail';
 import FinishPayment from './screens/FinishPayment';
 import DetailHistory from './screens/DetailHistory';
+import RoomChat from './screens/RoomChat';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -59,6 +60,7 @@ const TabChat = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ChatScreen" component={Chat} />
+      <Stack.Screen name="RoomChatScreen" component={RoomChat} />
     </Stack.Navigator>
   );
 };

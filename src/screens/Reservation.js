@@ -9,15 +9,15 @@ import {
   TextInput,
   TouchableOpacity,
   Modal,
-  Alert,
   Pressable,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import step1 from '../assets/Images/step1.png';
 import { Picker } from '@react-native-picker/picker';
 import jwt_decode from 'jwt-decode';
+import { getUserByIdApi } from '../utils/users';
 
 const Reservation = ({ navigation, route }) => {
   const [data, setData] = useState({
@@ -76,12 +76,12 @@ const Reservation = ({ navigation, route }) => {
 
   return (
     <ScrollView>
+      {/* MODAL NOT LOGIN */}
       <Modal
         animationType="slide"
         transparent={true}
         visible={notLogin}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setNotLogin(!notLogin);
         }}
       >
@@ -120,7 +120,7 @@ const Reservation = ({ navigation, route }) => {
                 fontWeight: '700',
               }}
             >
-              Kamu belum login, harap login untuk memesan kendaraan
+              Kamu belum login, harap login untuk memesan kendaraan anda
             </Text>
             <Pressable
               style={{
@@ -133,7 +133,7 @@ const Reservation = ({ navigation, route }) => {
               onPress={() => {
                 setNotLogin(!notLogin);
 
-                navigation.navigate('AuthScreen');
+                navigation.replace('AuthScreen');
               }}
             >
               <Text
