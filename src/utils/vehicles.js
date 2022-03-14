@@ -42,12 +42,6 @@ export const getLocationApi = () => {
   return axios.get(url);
 };
 
-export const addVehicleApi = (config, body) => {
-  const url = `${API_LOCAL}/vehicles`;
-  console.log('CONFIG-UTILS', config);
-  return axios.post(url, body, config);
-};
-
 export const editVehicleApi = (token, body, id) => {
   const url = `${API_LOCAL}/vehicles/${id}`;
   return axios.patch(url, body, {
@@ -60,4 +54,17 @@ export const editVehicleApi = (token, body, id) => {
 export const deleteVehicleAPi = id => {
   const url = `${API_LOCAL}/vehicles/${id}`;
   return axios.delete(url);
+};
+
+export const addVehicleApi = async (body, token) => {
+  const url = API_LOCAL + '/vehicles/';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'x-access-token': token,
+    },
+    body: body,
+  });
+  return res;
 };

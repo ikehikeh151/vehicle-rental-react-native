@@ -58,47 +58,38 @@ const AddItem = ({ navigation }) => {
   };
 
   // console.log(JSON.parse(token));
-  const handleUploadPhoto = () => {
-    const config = {
-      headers: {
-        'x-access-token': token,
-        'Content-Type': 'multipart/form-data; ',
-      },
-    };
-    // const body = new FormData();
-    // body.append('uploadPhotoVehicle', {
-    //   uri: photo.uri,
-    //   type: photo.type,
-    //   name: JSON.stringify(photo.fileName),
-    // });
-    // body.append('name', name);
-    // body.append('description', description);
-    // body.append('capacity', 4);
-    // body.append('price', price);
-    // body.append('stock', counter);
-    // body.append('location', locationSelected);
-    // body.append('category', categorySelected);
-    // body.append('status', 1);
-
-    const body = {
-      name: name,
-      description: description,
-      capacity: '4',
-      price: price,
-      stock: JSON.stringify(counter),
-      location: locationSelected,
-      category: categorySelected,
-      status: '1',
-      uploadPhotoVehicle: {
+  const handleSaveProduct = () => {
+    const body = new FormData();
+    if (photo !== null) {
+      body.append('uploadPhotoVehicle', {
         uri: photo.uri,
         type: photo.type,
-        name: photo.fileName,
-      },
-    };
+        name: JSON.stringify(photo.fileName),
+      });
+    }
+    if (name) {
+      body.append('name', name);
+    }
+    if (description) {
+      body.append('description', description);
+    }
+    body.append('capacity', 4);
+    if (price) {
+      body.append('price', price);
+    }
+    if (counter) {
+      body.append('stock', counter);
+    }
+    if (locationSelected) {
+      body.append('location', locationSelected);
+    }
+    if (categorySelected) {
+      body.append('category', categorySelected);
+    }
+    body.append('status', 1);
 
     console.log('BODY', body);
-
-    addVehicleApi(config, body)
+    addVehicleApi(body, token)
       .then(res => {
         console.log(res);
         if (res) {
@@ -110,11 +101,11 @@ const AddItem = ({ navigation }) => {
         if (err) {
           return alert('failed add vehicle');
         }
-        console.log(err);
-      });
+      })
+      .done();
   };
   // const { uri } = photo;
-  console.log('URI', photo);
+
   return (
     <ScrollView>
       <View
@@ -442,7 +433,7 @@ const AddItem = ({ navigation }) => {
               alignItems: 'center',
               backgroundColor: '#FFCD61',
             }}
-            onPress={handleUploadPhoto}
+            onPress={handleSaveProduct}
           >
             <Text
               style={{

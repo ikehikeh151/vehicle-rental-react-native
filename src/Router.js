@@ -20,6 +20,7 @@ import OrderDetail from './screens/OrderDetail';
 import FinishPayment from './screens/FinishPayment';
 import DetailHistory from './screens/DetailHistory';
 import RoomChat from './screens/RoomChat';
+import UpdateProfile from './screens/UpdateProfile';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,7 +71,7 @@ const TabProfile = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileScreen" component={Profile} />
       <Stack.Screen name="FavoriteScreen" component={DetailVehicle} />
-      <Stack.Screen name="UpdateProfileScreen" component={DetailVehicle} />
+      <Stack.Screen name="UpdateProfileScreen" component={UpdateProfile} />
       <Stack.Screen name="NotLoginScreen" component={NotLogin} />
     </Stack.Navigator>
   );

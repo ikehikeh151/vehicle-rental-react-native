@@ -3,7 +3,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 // import defaultPhoto from '../assets/Images/popular-default.jpg';
-import { API_URL } from '@env';
+import { API_URL, API_LOCAL } from '@env';
 
 const VehiclesCars = ({ navigation, cars }) => {
   const numberToRupiah = bilangan => {
@@ -85,7 +85,7 @@ const VehiclesCars = ({ navigation, cars }) => {
                 }}
               >
                 <Image
-                  source={{ uri: API_URL + photo[0] }}
+                  source={{ uri: API_LOCAL + photo[0] }}
                   style={{
                     width: undefined,
                     height: undefined,
