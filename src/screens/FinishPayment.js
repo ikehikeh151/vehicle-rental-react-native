@@ -14,6 +14,7 @@ import Icon2 from 'react-native-vector-icons/AntDesign';
 import step3 from '../assets/Images/step3.png';
 import { createHistoryApi } from '../utils/history';
 import { getCategoryApi, getLocationApi } from '../utils/vehicles';
+import { notification } from '../utils/notifications';
 
 // import { useState } from 'react';
 
@@ -138,10 +139,19 @@ const FinishPayment = ({ navigation, route }) => {
   // console.log('LOCATION', locationForBody);
   // console.log('VEHICLE', vehicle);
 
+  const cobaNotifikasi = () => {
+    notification.createChannel('payment');
+    notification.sendNoification(
+      'payment',
+      'Successful Payment',
+      'Please wait for your vehicle, you will deliver your ordered vehicle, thank you ^_^',
+    );
+  };
+
   const payment = () => {
     createHistoryApi(body)
       .then(res => {
-        Alert.alert('Transaction Successfuly');
+        cobaNotifikasi();
         console.log(res.data.result);
         navigation.replace('HistoryDetailScreen', {
           vehicle: vehicle,

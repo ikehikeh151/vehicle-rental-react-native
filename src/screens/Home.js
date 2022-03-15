@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 /* eslint-disable react-native/no-inline-styles */
-import { API_URL, API_LOCAL } from '@env';
+import { API_URL } from '@env';
 import {
   View,
   Text,
@@ -28,7 +28,7 @@ const Home = ({ navigation, route }) => {
   const [motorBike, setMotorBike] = useState([]);
   const [bike, setBike] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [imgDummy, setImgDummy] = useState(false);
+  const [setImgDummy] = useState(false);
 
   console.log('ROLE', role);
 
@@ -213,7 +213,7 @@ const Home = ({ navigation, route }) => {
                 cars.map((item, idx) => {
                   // console.log('ITEM-CARS >>>>', item);
                   const photo = JSON.parse(item.photo);
-                  const img = API_LOCAL + photo[0];
+                  const img = API_URL + photo[0];
                   fetch(img).then(res => {
                     if (res.status === 404) {
                       setImgDummy(true);
@@ -331,7 +331,7 @@ const Home = ({ navigation, route }) => {
                       }}
                     >
                       <Image
-                        source={{ uri: API_LOCAL + photo[0] }}
+                        source={{ uri: API_URL + photo[0] }}
                         style={{
                           width: undefined,
                           height: undefined,
@@ -427,7 +427,7 @@ const Home = ({ navigation, route }) => {
                       }}
                     >
                       <Image
-                        source={{ uri: API_LOCAL + photo[0] }}
+                        source={{ uri: API_URL + photo[0] }}
                         style={{
                           width: undefined,
                           height: undefined,

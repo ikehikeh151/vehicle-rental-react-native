@@ -14,7 +14,7 @@ import {
   Pressable,
   Alert,
 } from 'react-native';
-import { API_URL, API_LOCAL } from '@env';
+import { API_URL } from '@env';
 import Loading from '../components/Loading';
 import { Picker } from '@react-native-picker/picker';
 import { getVehicleByIdApi } from '../utils/vehicles';
@@ -46,7 +46,7 @@ const DetailVehicle = ({ navigation, route }) => {
   const photoView =
     Object.keys(vehicle).length > 0 ? JSON.parse(photo)[0] : null;
 
-  // console.log('PHOTO', API_LOCAL + photoView);
+  // console.log('PHOTO', API_URL + photoView);
 
   const numberToRupiah = bilangan => {
     let separator = '';
@@ -213,7 +213,7 @@ const DetailVehicle = ({ navigation, route }) => {
             style={{ height: 300, width: width }}
             source={
               Object.keys(vehicle).length > 0
-                ? { uri: API_LOCAL + photoView }
+                ? { uri: API_URL + photoView }
                 : defaultPhoto
             }
           >

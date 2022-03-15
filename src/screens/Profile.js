@@ -16,7 +16,7 @@ import { getUserByIdApi } from '../utils/users';
 import Loading from '../components/Loading';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import photoDefault from '../assets/Images/picUserDefault.jpg';
-import { API_LOCAL } from '@env';
+import { API_URL } from '@env';
 
 const height = Dimensions.get('screen').height;
 
@@ -115,7 +115,7 @@ const Profile = ({ navigation }) => {
                   source={
                     !profile.photo
                       ? photoDefault
-                      : { uri: API_LOCAL + profile.photo }
+                      : { uri: API_URL + profile.photo }
                   }
                   style={{
                     resizeMode: 'cover',

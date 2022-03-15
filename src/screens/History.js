@@ -16,7 +16,7 @@ import { historyByUserApi } from '../utils/history';
 import { getUserByIdApi } from '../utils/users';
 import jwt_decode from 'jwt-decode';
 import Loading from '../components/Loading';
-import { API_LOCAL } from '@env';
+import { API_URL } from '@env';
 const History = ({ navigation }) => {
   const [user, setUser] = useState({}); // FOR TOKEN IS NOT LOGIN
   const [userById, setUserById] = useState({}); // FOR HISTORY USER BY ID
@@ -356,7 +356,7 @@ const History = ({ navigation }) => {
                     }}
                   >
                     <Image
-                      source={{ uri: API_LOCAL + photo[0] }}
+                      source={{ uri: API_URL + photo[0] }}
                       style={{
                         width: undefined,
                         height: undefined,

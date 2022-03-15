@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import defaultPhoto from '../assets/Images/defaultFotoUpload.png';
 import { RadioButton } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { API_LOCAL } from '@env';
+import { API_URL } from '@env';
 import { updateProfileApi } from '../utils/users';
 
 const UpdateProfile = ({ navigation, route }) => {
@@ -150,7 +150,7 @@ const UpdateProfile = ({ navigation, route }) => {
                 ? { uri: photo.uri }
                 : profile.photo === null
                 ? defaultPhoto
-                : { uri: API_LOCAL + profile.photo }
+                : { uri: API_URL + profile.photo }
             }
             style={{
               flex: 1,

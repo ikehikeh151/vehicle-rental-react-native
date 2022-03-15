@@ -1,6 +1,6 @@
 import axios from 'axios';
 // import { API_URL } from '@env';
-import { API_LOCAL } from '@env';
+import { API_URL } from '@env';
 
 export const getUserByIdApi = token => {
   const config = {
@@ -8,12 +8,12 @@ export const getUserByIdApi = token => {
       'x-access-token': token,
     },
   };
-  const url = API_LOCAL + '/users/detail';
+  const url = API_URL + '/users/detail';
   return axios.get(url, config);
 };
 
 export const updateProfileApi = async (body, token) => {
-  const url = API_LOCAL + '/users/edit';
+  const url = API_URL + '/users/edit';
   const res = await fetch(url, {
     method: 'PATCH',
     headers: {
