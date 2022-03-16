@@ -7,23 +7,30 @@ export const getVehicleByIdApi = id => {
   return axios.get(url);
 };
 
+export const getVehiclesSearchApi = (keyword, filter) => {
+  console.log(keyword.length);
+  console.log('FILTER >>>', filter);
+  const url = API_URL + `/vehicles?cari=${keyword}&filter=${filter}`;
+  return axios.get(url);
+};
+
 export const getVehiclesPopularApi = () => {
   const url = API_URL + '/history/popular';
   return axios.get(url);
 };
 
 export const getVehiclesBikeApi = () => {
-  const url = `${API_URL}/vehicles?filter=bike`;
+  const url = `${API_URL}/vehicles?sort=desc&by=id&filter=bike`;
   return axios.get(url);
 };
 
 export const getVehiclesMotorBikeApi = () => {
-  const url = `${API_URL}/vehicles?filter=motorbike`;
+  const url = `${API_URL}/vehicles?sort=desc&by=id&filter=motorbike`;
   return axios.get(url);
 };
 
 export const getVehiclesCarsApi = () => {
-  const url = `${API_URL}/vehicles?filter=cars`;
+  const url = `${API_URL}/vehicles?sort=desc&by=id&filter=cars`;
   return axios.get(url);
 };
 

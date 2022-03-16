@@ -11,14 +11,15 @@ import { Provider } from 'react-redux';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './src/redux/store';
-import Loading from './src/components/Loading';
+import SplashScreen from './src/components/SplashScreen';
 import { LogBox } from 'react-native';
 
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
+  'Non-serializable values were found in the navigation state',
 ]);
 
-const theme = {
+const themeCheckBox = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
@@ -29,9 +30,9 @@ const theme = {
 
 const App = () => (
   <Provider store={store}>
-    <PersistGate loading={<Loading />} persistor={persistor}>
+    <PersistGate loading={<SplashScreen />} persistor={persistor}>
       <NavigationContainer>
-        <PaperProvider theme={theme}>
+        <PaperProvider theme={themeCheckBox}>
           <Router />
         </PaperProvider>
       </NavigationContainer>

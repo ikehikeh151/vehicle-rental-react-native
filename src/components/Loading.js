@@ -5,11 +5,11 @@ export default function Loading() {
   return (
     <View style={styles.container}>
       <View style={[styles.containerCircle]}>
-        <ActivityIndicator size="small" />
-        <ActivityIndicator size="large" color="#ac5fdb" />
-        <ActivityIndicator size="small" color="#e3a2ee" />
-        <ActivityIndicator size="large" color="#ffa800" />
-        <ActivityIndicator size="small" color="#0ef6be" />
+        {/* <ActivityIndicator size="small" /> */}
+        <ActivityIndicator size="large" color="#FFCD61" />
+        {/* <ActivityIndicator size="small" color="#e3a2ee" /> */}
+        {/* <ActivityIndicator size="large" color="#ffa800" /> */}
+        {/* <ActivityIndicator size="small" color="#0ef6be" /> */}
       </View>
 
       <Text style={styles.loading}>Loading ...</Text>
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor: '#3c3541',
+    backgroundColor: '#fff',
   },
   containerCircle: {
     flexDirection: 'row',
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   loading: {
     fontFamily: 'Poppins-Regular',
     fontSize: 40,
-    color: '#fff',
+    color: '#3c3541',
     textAlign: 'center',
   },
 });

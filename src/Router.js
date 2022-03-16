@@ -21,6 +21,9 @@ import FinishPayment from './screens/FinishPayment';
 import DetailHistory from './screens/DetailHistory';
 import RoomChat from './screens/RoomChat';
 import UpdateProfile from './screens/UpdateProfile';
+import Loading from './components/Loading';
+import SearchVehicle from './screens/SearchVehicle';
+import FilterVehicle from './screens/FilterVehicle';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -44,6 +47,8 @@ const TabHome = () => {
       <Stack.Screen name="OrderDetailScreen" component={OrderDetail} />
       <Stack.Screen name="FinishPaymentScreen" component={FinishPayment} />
       <Stack.Screen name="HistoryDetailScreen" component={DetailHistory} />
+      <Stack.Screen name="SearchScreen" component={SearchVehicle} />
+      <Stack.Screen name="FilterScreen" component={FilterVehicle} />
     </Stack.Navigator>
   );
 };
@@ -138,6 +143,7 @@ const Router = () => (
     initialRouteName="TabStack"
   >
     <Stack.Screen name="AuthScreen" component={AuthScreen} />
+    <Stack.Screen name="Loading" component={Loading} />
     <Stack.Screen name="TabStack" component={TabStack} />
   </Stack.Navigator>
 );

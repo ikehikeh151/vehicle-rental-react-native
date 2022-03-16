@@ -29,8 +29,14 @@ const Home = ({ navigation, route }) => {
   const [bike, setBike] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [setImgDummy] = useState(false);
+  const [search, setSearch] = useState('');
 
   console.log('ROLE', role);
+  console.log('PARENT =', search);
+
+  const handleOnChangeSearch = newValue => {
+    setSearch(newValue);
+  };
 
   const getCars = useCallback(() => {
     getVehiclesCarsApi()
@@ -79,9 +85,10 @@ const Home = ({ navigation, route }) => {
       getBike();
       getCars();
       getMotorBike();
+      setSearch('');
     });
     return unsubcribe;
-  }, [navigation, getBike, getCars, getMotorBike]);
+  }, [navigation, getBike, getCars, getMotorBike, setSearch]);
 
   // console.log('CARS', cars);
 
@@ -113,6 +120,12 @@ const Home = ({ navigation, route }) => {
                 marginTop: 70,
                 color: 'white',
                 paddingStart: 20,
+              }}
+              onChangeText={handleOnChangeSearch}
+              onSubmitEditing={() => {
+                navigation.navigate('SearchScreen', {
+                  keyword: search,
+                });
               }}
             />
 
