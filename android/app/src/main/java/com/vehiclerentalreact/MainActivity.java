@@ -1,4 +1,4 @@
-package com.vehiclerental;
+package com.vehiclerentalreact;
 
 import com.facebook.react.ReactActivity;
 

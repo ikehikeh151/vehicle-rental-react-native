@@ -1,4 +1,4 @@
-package com.vehiclerental;
+package com.vehiclerentalreact;
 
 import android.app.Application;
 import android.content.Context;
