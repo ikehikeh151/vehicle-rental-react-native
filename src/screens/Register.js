@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { registerApi } from '../utils/auth';
 import bgRegister from '../assets/Images/bg-signup.png';
 import Button from '../components/Button';
+import Modal from '../components/Modal';
 
 const { height } = Dimensions.get('screen');
 
@@ -21,26 +22,52 @@ const Register = ({ navigation }) => {
     noHp: '',
     password: '',
   });
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const goLogin = () => {
     navigation.navigate('Login');
   };
 
+  const cbIsError = text => {
+    setIsError(text);
+  };
+  const cbIsSuccess = text => {
+    setIsSuccess(text);
+  };
+  console.log('ISeRROR', isError);
   const onSubmit = () => {
     registerApi(body)
       .then(res => {
         console.log(res);
-        alert('Sign Up Successfuly');
-        navigation.navigate('Login');
+        // alert('Sign Up Successfuly');
+        cbIsSuccess(true);
       })
       .catch(err => {
-        console.log(err);
-        alert('Email is already registered');
+        console.log(err.response);
+        // alert('Email is already registered');
+
+        setIsSuccess(false);
+        cbIsError(true);
       });
   };
 
   return (
     <ScrollView>
+      <Modal
+        title="Register Success, registration is successful, please login"
+        onModal={isSuccess}
+        navigation={navigation}
+        type="register success"
+        cb={cbIsSuccess}
+      />
+      <Modal
+        title="Please fill in the correct"
+        onModal={isError}
+        navigation={navigation}
+        type="register fail"
+        cb={cbIsError}
+      />
       <ImageBackground
         source={bgRegister}
         resizeMode="cover"

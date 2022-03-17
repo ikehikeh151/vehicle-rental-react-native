@@ -8,6 +8,12 @@ export const loginAction = body => {
   };
 };
 
+export const resetAction = () => {
+  return {
+    type: ACTION_STRING.authReset,
+  };
+};
+
 export const logoutAction = config => {
   return {
     type: ACTION_STRING.authLogout,

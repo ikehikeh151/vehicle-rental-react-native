@@ -11,7 +11,7 @@ import {
   Modal,
   Pressable,
 } from 'react-native';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import step1 from '../assets/Images/step1.png';
@@ -28,6 +28,7 @@ const Reservation = ({ navigation, route }) => {
     paymentType: '',
   });
   const [user, setUser] = useState({});
+  const [userForInput, setUserForInput] = useState({});
   const [notLogin, setNotLogin] = useState(false);
   const vehicles = route.params.vehicles;
   const day = route.params.day;
@@ -40,6 +41,7 @@ const Reservation = ({ navigation, route }) => {
     this.splice(to, 0, this.splice(from, 1)[0]);
     return this;
   };
+
   dateArr.move(2, 0);
   dateArr.move(1, 2);
   const newDate = dateArr.join('-');
@@ -74,6 +76,17 @@ const Reservation = ({ navigation, route }) => {
     }
   }, [token]);
 
+  useEffect(() => {
+    getUserByIdApi(token)
+      .then(res => {
+        setUserForInput(res.data.result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [token]);
+
+  console.log('USER>>>', userForInput);
   return (
     <ScrollView>
       {/* MODAL NOT LOGIN */}
@@ -236,6 +249,11 @@ const Reservation = ({ navigation, route }) => {
         <TextInput
           placeholder="Name"
           placeholderTextColor="#393939"
+          value={
+            Object.values(userForInput).length !== null
+              ? userForInput.name
+              : null
+          }
           onChangeText={text => {
             setData({
               ...data,
@@ -271,6 +289,11 @@ const Reservation = ({ navigation, route }) => {
               phone: text,
             });
           }}
+          value={
+            Object.values(userForInput).length !== null
+              ? userForInput.phone
+              : null
+          }
           style={{
             // borderWidth: 1,
             width: '90%',
@@ -300,6 +323,11 @@ const Reservation = ({ navigation, route }) => {
               email: text,
             });
           }}
+          value={
+            Object.values(userForInput).length !== null
+              ? userForInput.email
+              : null
+          }
           style={{
             // borderWidth: 1,
             width: '90%',

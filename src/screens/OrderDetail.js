@@ -211,7 +211,9 @@ const Reservation = ({ navigation, route }) => {
             color: 'black',
           }}
         >
-          {`Rp. ${numberToRupiah(vehicle.price * day)}`}
+          {`Rp. ${numberToRupiah(
+            vehicle.price * day * parseInt(dataApi.qty, 10),
+          )}`}
         </Text>
         <Icon2
           name="infocirlce"

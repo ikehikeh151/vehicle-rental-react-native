@@ -12,9 +12,9 @@ import React, { useEffect, useState } from 'react';
 import bgLogin from '../assets/Images/bg-login.png';
 import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { loginAction } from '../redux/actions/auth';
+import { loginAction, resetAction } from '../redux/actions/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import ModalComponent from '../components/Modal';
+import Modal from '../components/Modal';
 
 const { height } = Dimensions.get('window');
 
@@ -26,10 +26,12 @@ const Login = ({ navigation }) => {
     email: '',
     password: '',
   });
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const goRegister = () => {
     dispatch(loginAction(body)).catch(err => {
-      console.log(err.message);
+      console.log(err);
     });
   };
 
@@ -51,7 +53,11 @@ const Login = ({ navigation }) => {
 
   useEffect(() => {
     if (auth.isFulfilled) {
-      return navigation.replace('TabStack');
+      setIsSuccess(true);
+    }
+    if (auth.isPending) {
+      setIsSuccess(false);
+      setIsError(true);
     }
 
     if (!token) {
@@ -59,11 +65,25 @@ const Login = ({ navigation }) => {
         console.log(err);
       });
     }
-  }, [auth, navigation, token]);
-  console.log('ERR', token);
+  }, [auth, navigation, token, isSuccess, isError]);
+  console.log('ERR', isError);
+
+  useEffect(() => {
+    const unsubcribe = navigation.addListener('focus', () => {
+      console.log('Refresh Data ..');
+      dispatch(resetAction());
+    });
+    return unsubcribe;
+  }, [navigation, dispatch]);
 
   return (
     <ScrollView>
+      <Modal
+        title="Login Success"
+        navigation={navigation}
+        onModal={isSuccess}
+        type="login success"
+      />
       <ImageBackground
         source={bgLogin}
         resizeMode="cover"

@@ -124,7 +124,8 @@ const DetailVehicle = ({ navigation, route }) => {
         console.log(err);
       });
   }, [id]);
-  // console.log('vehicles-Detail', vehicle);
+  console.log('vehicles-Detail', vehicle);
+  console.log('ROLE', role + ' ' + 'TIPE', typeof role);
   return (
     <>
       {isLoading ? (
@@ -519,7 +520,11 @@ const DetailVehicle = ({ navigation, route }) => {
                       color: '#393939',
                     }}
                   >
-                    Select Bikes
+                    {vehicle.category === 'Cars'
+                      ? 'Select Cars'
+                      : vehicle.category === 'Motorbike'
+                      ? 'Select Motor Bike'
+                      : 'Select Bikes'}
                   </Text>
 
                   <View
@@ -567,7 +572,9 @@ const DetailVehicle = ({ navigation, route }) => {
                         backgroundColor: '#FFCD61',
                       }}
                       onPress={() => {
-                        setCounter(counter + 1);
+                        setCounter(
+                          vehicle.stock > counter ? counter + 1 : counter,
+                        );
                       }}
                     >
                       <Icon name="plus" style={{ color: 'black' }} />

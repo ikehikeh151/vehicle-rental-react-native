@@ -1,16 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import { Text, View, Modal, Pressable } from 'react-native';
+import { Text, View, Modal, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 
-function ModalComponent({ title, onModal }) {
-  const [modal, setModal] = useState(true);
-  console.log('TITLE-MODAL', title);
-  console.log('ON-MODAL MODAL', onModal);
+function ModalComponent({ title, onModal, navigation, type, cb }) {
+  const [modal, setModal] = useState(false);
+  console.log('MODAL FOR', type);
+  console.log('CB IS ERROR', cb);
 
   return (
     <Modal
       visible={onModal}
-      transparent={true}
+      // transparent={true}
       animationType="slide"
       onRequestClose={() => {
         setModal(false);
@@ -31,6 +31,17 @@ function ModalComponent({ title, onModal }) {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 10,
+            // borderWidth: 1,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
+            shadowOpacity: 0.29,
+            shadowRadius: 4.65,
+
+            elevation: 7,
+            padding: 10,
           }}
         >
           <Text
@@ -39,14 +50,15 @@ function ModalComponent({ title, onModal }) {
               fontSize: 30,
               fontFamily: 'Poppins-Regular',
               fontWeight: '700',
+              textAlign: 'center',
             }}
           >
-            Error
+            {title}
           </Text>
-          <Pressable
+          <TouchableOpacity
             style={{
               backgroundColor: '#FFCD61',
-              marginTop: 90,
+              marginTop: 40,
               height: '20%',
               width: '50%',
               justifyContent: 'center',
@@ -54,7 +66,18 @@ function ModalComponent({ title, onModal }) {
               borderRadius: 5,
             }}
             onPress={() => {
-              setModal(!modal);
+              if (type === 'register fail') {
+                setModal(!modal);
+                cb(false);
+              }
+              if (type === 'register success') {
+                setModal(!modal);
+                navigation.navigate('Login');
+              }
+              if (type === 'login success') {
+                setModal(!modal);
+                navigation.replace('TabStack');
+              }
             }}
           >
             <Text
@@ -67,7 +90,7 @@ function ModalComponent({ title, onModal }) {
             >
               OK
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>

@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Picker } from '@react-native-picker/picker';
 
 const FilterVehicle = ({ navigation, route }) => {
-  const filter = route.params.filter;
   const setFilter = route.params.cbFilter;
   const setSearch = route.params.cbSearch;
   const [type, setType] = useState('');

@@ -13,11 +13,11 @@ const initialState = {
   isRejected: false,
 };
 const authReducer = (prevState = initialState, action) => {
-  const { authLogin } = ACTION_STRING;
+  const { authLogin, authReset } = ACTION_STRING;
   const { Pending, Fulfilled, Rejected } = ActionType;
   switch (action.type) {
     case authLogin.concat('_', Pending):
-      console.log('PENDING >>>', prevState);
+      // console.log('PENDING >>>', prevState);
       return {
         ...prevState,
         isPending: true,
@@ -45,8 +45,18 @@ const authReducer = (prevState = initialState, action) => {
 
       return {
         ...prevState,
+        isRejected: true,
+        isPending: false,
+        isFulfilled: false,
 
         err,
+      };
+    case authReset:
+      return {
+        ...prevState,
+        isRejected: false,
+        isPending: false,
+        isFulfilled: false,
       };
 
     default:
