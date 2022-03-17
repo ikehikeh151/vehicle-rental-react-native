@@ -11,7 +11,6 @@ import {
   Dimensions,
   ImageBackground,
   Modal,
-  Pressable,
   Alert,
 } from 'react-native';
 import { API_URL } from '@env';
@@ -137,7 +136,7 @@ const DetailVehicle = ({ navigation, route }) => {
           >
             <Modal
               animationType="slide"
-              transparent={true}
+              // transparent={true}
               visible={modalVisible}
               onRequestClose={() => {
                 Alert.alert('Modal has been closed.');
@@ -180,7 +179,7 @@ const DetailVehicle = ({ navigation, route }) => {
                   >
                     {message}
                   </Text>
-                  <Pressable
+                  <TouchableOpacity
                     style={{
                       backgroundColor: '#FFCD61',
                       borderRadius: 10,
@@ -200,11 +199,13 @@ const DetailVehicle = ({ navigation, route }) => {
                         fontWeight: 'bold',
                         textAlign: 'center',
                         elevation: 2,
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 20,
                       }}
                     >
-                      Ok
+                      OK
                     </Text>
-                  </Pressable>
+                  </TouchableOpacity>
                 </View>
               </View>
             </Modal>

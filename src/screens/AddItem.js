@@ -1,4 +1,3 @@
-/* eslint-disable no-alert */
 /* eslint-disable react-native/no-inline-styles */
 import {
   View,
@@ -13,25 +12,9 @@ import * as ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import defaultPhoto from '../assets/Images/defaultFotoUpload.png';
 import { Picker } from '@react-native-picker/picker';
-// import { API_URL } from '@env';
 import { useSelector } from 'react-redux';
 import { addVehicleApi } from '../utils/vehicles';
-
-// const createFormData = (photo, body = {}) => {
-//   const data = new FormData();
-
-//   data.append('photo', {
-//     name: photo.fileName,
-//     type: photo.type,
-//     uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
-//   });
-
-//   Object.keys(body).forEach(key => {
-//     data.append(key, body[key]);
-//   });
-
-//   return data;
-// };
+import Modal from '../components/Modal';
 
 const AddItem = ({ navigation }) => {
   const auth = useSelector(state => state.auth.authUser);
@@ -44,6 +27,8 @@ const AddItem = ({ navigation }) => {
   const [categorySelected, setCategorySelected] = useState(1);
   const [counter, setCounter] = useState(0);
   const [photo, setPhoto] = useState(null);
+  const [isSuccessAdd, setIsSuccessAdd] = useState(false);
+  const [isWrongFill, setIsWrongFill] = useState(false);
 
   const handleChoosePhoto = () => {
     ImagePicker.launchImageLibrary({ noData: true }, response => {
@@ -55,6 +40,14 @@ const AddItem = ({ navigation }) => {
         setPhoto(response.assets[0]);
       }
     });
+  };
+
+  const cbWrongFill = text => {
+    setIsWrongFill(text);
+  };
+
+  const cbSuccessAdd = text => {
+    setIsSuccessAdd(text);
   };
 
   // console.log(JSON.parse(token));
@@ -88,26 +81,43 @@ const AddItem = ({ navigation }) => {
     }
     body.append('status', 1);
 
-    console.log('BODY', body);
-    addVehicleApi(body, token)
-      .then(res => {
-        console.log(res);
-        if (res) {
-          alert('successfuly add vehicle');
-          return navigation.navigate('HomeTab');
-        }
-      })
-      .catch(err => {
-        if (err) {
-          return alert('failed add vehicle');
-        }
-      })
-      .done();
+    if (photo !== null && name.length !== 0 && description.length !== 0) {
+      addVehicleApi(body, token)
+        .then(res => {
+          console.log(res);
+          if (res) {
+            cbSuccessAdd(true);
+          }
+        })
+        .catch(err => {
+          if (err) {
+            cbWrongFill(true);
+          }
+        })
+        .done();
+      console.log('SUCCESS');
+    } else {
+      console.log('ADD VEHICLE FAILED');
+      cbWrongFill(true);
+    }
   };
   // const { uri } = photo;
 
   return (
     <ScrollView>
+      <Modal
+        title="Please fill in all the correct"
+        onModal={isWrongFill}
+        type="data null"
+        cb={cbWrongFill}
+      />
+      <Modal
+        title="Successfully added your vehicle"
+        onModal={isSuccessAdd}
+        type="add success"
+        cb={cbSuccessAdd}
+        navigation={navigation}
+      />
       <View
         style={{
           flexDirection: 'row',

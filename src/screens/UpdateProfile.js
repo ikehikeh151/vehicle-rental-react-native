@@ -17,6 +17,7 @@ import { RadioButton } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { API_URL } from '@env';
 import { updateProfileApi } from '../utils/users';
+import Modal from '../components/Modal';
 
 const UpdateProfile = ({ navigation, route }) => {
   const token = useSelector(state => state.auth.authUser.token);
@@ -31,8 +32,9 @@ const UpdateProfile = ({ navigation, route }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [selectDate, setSelectDate] = useState('');
+  const [selectDate, setSelectDate] = useState(profile.birtday);
   const [address, setAddress] = useState('');
+  const [isSuccessUpdate, setIsSuccessUpdate] = useState(false);
 
   const handleConfirmDate = date => {
     const dateLocal = iso8601 => {
@@ -57,6 +59,10 @@ const UpdateProfile = ({ navigation, route }) => {
         setPhoto(response.assets[0]);
       }
     });
+  };
+
+  const cbIsSuccessUpdate = text => {
+    setIsSuccessUpdate(text);
   };
 
   const handleSave = () => {
@@ -87,19 +93,26 @@ const UpdateProfile = ({ navigation, route }) => {
       body.append('address', address);
     }
 
-    console.log('BODY', body);
     updateProfileApi(body, token)
       .then(res => {
         console.log(res);
+        cbIsSuccessUpdate(true);
       })
       .catch(err => {
         console.log(err);
       })
       .done();
   };
-
+  console.log('BODY', profile.birtday.length);
   return (
     <ScrollView>
+      <Modal
+        title="Successfully changed your profile"
+        onModal={isSuccessUpdate}
+        type="update profile"
+        navigation={navigation}
+        cb={cbIsSuccessUpdate}
+      />
       <View
         style={{
           justifyContent: 'space-between',

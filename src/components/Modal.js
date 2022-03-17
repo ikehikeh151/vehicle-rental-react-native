@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 function ModalComponent({ title, onModal, navigation, type, cb }) {
   const [modal, setModal] = useState(false);
   console.log('MODAL FOR', type);
-  console.log('CB IS ERROR', cb);
 
   return (
     <Modal
@@ -77,6 +76,22 @@ function ModalComponent({ title, onModal, navigation, type, cb }) {
               if (type === 'login success') {
                 setModal(!modal);
                 navigation.replace('TabStack');
+              }
+              if (type === 'logout success') {
+                cb(false);
+                setModal(!modal);
+                navigation.navigate('TabStack');
+              }
+              if (type === 'data null') {
+                cb(false);
+              }
+              if (type === 'add success') {
+                cb(false);
+                navigation.replace('HomeScreen');
+              }
+              if (type === 'update profile') {
+                cb(false);
+                navigation.navigate('ProfileScreen');
               }
             }}
           >

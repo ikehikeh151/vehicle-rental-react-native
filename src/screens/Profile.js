@@ -1,5 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable no-alert */
 import {
   View,
   Text,
@@ -17,6 +16,7 @@ import Loading from '../components/Loading';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import photoDefault from '../assets/Images/picUserDefault.jpg';
 import { API_URL } from '@env';
+import Modal from '../components/Modal';
 
 const height = Dimensions.get('screen').height;
 
@@ -24,28 +24,9 @@ const Profile = ({ navigation }) => {
   const auth = useSelector(state => state.auth);
   const token = auth.authUser.token;
   const [isLogin, setIsLogin] = useState(false);
-  const [isLoading, isSetLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState({});
-
-  const getProfile = useCallback(() => {
-    getUserByIdApi(token)
-      .then(res => {
-        console.log(res);
-        setProfile(res.data.result);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, [token]);
-
-  useEffect(() => {
-    getProfile();
-    const unsubcribe = navigation.addListener('focus', () => {
-      console.log('Refresh Data ..');
-      getProfile();
-    });
-    return unsubcribe;
-  }, [getProfile, navigation]);
+  const [isLogoutSuccess, setIsLogoutSuccess] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -55,6 +36,27 @@ const Profile = ({ navigation }) => {
       return setIsLogin(false);
     }
   }, [auth, navigation, token]);
+
+  const getProfile = useCallback(() => {
+    getUserByIdApi(token)
+      .then(res => {
+        // console.log(res);
+        setProfile(res.data.result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [token]);
+
+  useEffect(() => {
+    const unsubcribe = navigation.addListener('focus', () => {
+      console.log('Refresh Data ..');
+      getProfile();
+      setIsLoading(false);
+    });
+    return unsubcribe;
+  }, [getProfile, navigation]);
+  console.log(isLoading);
 
   const ProfileLogin = () => {
     const config = {
@@ -70,16 +72,17 @@ const Profile = ({ navigation }) => {
           navigation.navigate('TabStack');
         }
       });
-      alert('LOGOUT');
+      cbIsLogoutSuccess(true);
+      // alert('LOGOUT');
     };
-    console.log('PROFILE LENGHT', Object.values(profile).length);
-    console.log('PROFILE >>>', profile);
+    // console.log('PROFILE LENGHT', Object.values(profile).length);
+    // console.log('PROFILE >>>', profile);
     return (
       <>
-        {Object.values(profile).length === 0 ? (
+        {isLoading ? (
           <Loading />
         ) : (
-          <View
+          <ScrollView
             style={{
               height: height,
               // justifyContent: 'space-between',
@@ -271,6 +274,7 @@ const Profile = ({ navigation }) => {
               <TouchableOpacity
                 style={{
                   // borderWidth: 1,
+                  marginTop: 150,
                   width: '90%',
                   height: 57,
                   borderRadius: 10,
@@ -292,14 +296,23 @@ const Profile = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </ScrollView>
         )}
       </>
     );
   };
-
+  const cbIsLogoutSuccess = text => {
+    setIsLogoutSuccess(text);
+  };
   return (
     <View>
+      <Modal
+        title="Logout Success"
+        navigation={navigation}
+        type="logout success"
+        onModal={isLogoutSuccess}
+        cb={cbIsLogoutSuccess}
+      />
       {!isLogin ? <NotLogin navigation={navigation} /> : <ProfileLogin />}
     </View>
   );
