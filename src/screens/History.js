@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import {
   View,
@@ -9,7 +8,8 @@ import {
   Pressable,
   Image,
 } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+// import CheckBox from '@react-native-community/checkbox';
+import { Checkbox } from 'react-native-paper';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { historyByUserApi } from '../utils/history';
@@ -21,12 +21,11 @@ const History = ({ navigation }) => {
   const [user, setUser] = useState({}); // FOR TOKEN IS NOT LOGIN
   const [userById, setUserById] = useState({}); // FOR HISTORY USER BY ID
   const [history, setHistory] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [notLogin, setNotLogin] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState([]);
+  const [checked, setChecked] = useState([]);
   const [isNameNull, setIsNameNull] = useState(false);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  console.log(toggleCheckBox);
 
   const token = useSelector(state => state.auth.authUser.token);
   const name = userById.name;
@@ -70,37 +69,47 @@ const History = ({ navigation }) => {
           console.log(err);
         });
     } else {
-      setIsLoading(true);
-
+      // setIsLoading(true);
       // if (name === undefined) {
       //   setIsNameNull(true);
       // }
     }
   }, [name]);
 
-  useEffect(() => {
-    if (history.length === 0) {
-      setIsLoading(true);
-    }
-    getUserById();
-  }, [getUserById, history]);
+  // console.log(isSelected);
+  // useEffect(() => {
+  //   if (history.length === 0) {
+  //     // setIsLoading(true);
+  //     console.log('BELUM ADA HISTORY');
+  //   }
+  //   getUserById();
+  // }, [getUserById, history]);
 
   useEffect(() => {
-    const tokenDecoded = token === null ? setNotLogin(true) : token;
-    if (token) {
-      setUser(jwt_decode(tokenDecoded));
-    }
-  }, [token]);
+    // const tokenDecoded = token === null ? setNotLogin(true) : token;
+    // if (token) {
+    //   setUser(jwt_decode(tokenDecoded));
+    //   setNotLogin(false);
+    // }
+    getUserById();
+    getHistoryByName();
+  }, [token, getUserById, getHistoryByName]);
 
   useEffect(() => {
     const unsubcribe = navigation.addListener('focus', () => {
       console.log('Refresh Data ..');
-
       getUserById();
+      const tokenDecoded = token === null ? setNotLogin(true) : token;
+      if (token) {
+        setUser(jwt_decode(tokenDecoded));
+        setNotLogin(false);
+      }
+
       getHistoryByName();
+      console.log('HISTORY>>>', history);
     });
     return unsubcribe;
-  }, [token, navigation, getUserById, getHistoryByName]);
+  }, [token, navigation, getUserById, getHistoryByName, history]);
 
   const dateLocal = iso8601 => {
     const date = new Date(iso8601).toString();
@@ -111,226 +120,225 @@ const History = ({ navigation }) => {
     return [day, mnth, year].join('-');
   };
 
-  console.log(history);
+  // console.log(history);
 
   return (
     <>
+      <Text
+        style={{
+          textAlign: 'center',
+          color: '#000',
+          padding: 50,
+          // borderWidth: 1,
+          backgroundColor: '#fff',
+          fontFamily: 'Nunito-Regular',
+          fontWeight: '700',
+          fontSize: 28,
+        }}
+      >
+        History Order
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          backgroundColor: '#fff',
+          padding: 20,
+          paddingStart: '40%',
+          // marginBottom: 30,
+        }}
+      >
+        <Text
+          style={{
+            color: 'grey',
+            marginEnd: '40%',
+            fontFamily: 'Nunito-Regular',
+            fontSize: 14,
+            fontWeight: '600',
+          }}
+        >
+          A Week ago
+        </Text>
+        {isSelected ? (
+          <Text
+            style={{
+              color: 'grey',
+              fontFamily: 'Nunito-Regular',
+              fontSize: 14,
+              fontWeight: '600',
+            }}
+          >
+            Delete
+          </Text>
+        ) : (
+          <Text
+            style={{
+              color: 'grey',
+              fontFamily: 'Nunito-Regular',
+              fontSize: 14,
+              fontWeight: '600',
+            }}
+          >
+            Select
+          </Text>
+        )}
+      </View>
       {isLoading ? (
         <Loading />
       ) : (
-        <ScrollView>
-          {/* MODAL NOT LOGIN */}
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={notLogin}
-            onRequestClose={() => {
-              setNotLogin(!notLogin);
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#fff',
+        <>
+          <ScrollView>
+            {/* MODAL NOT LOGIN */}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={notLogin}
+              onRequestClose={() => {
+                setNotLogin(!notLogin);
               }}
             >
               <View
                 style={{
-                  margin: 20,
-                  backgroundColor: 'white',
-                  borderRadius: 20,
-                  padding: 35,
+                  flex: 1,
+                  justifyContent: 'center',
                   alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 4,
-                  elevation: 5,
+                  backgroundColor: '#fff',
                 }}
               >
-                <Text
+                <View
                   style={{
-                    marginBottom: 15,
-                    textAlign: 'center',
-                    color: 'black',
-                    fontSize: 25,
-                    fontFamily: 'Poppins-Regular',
-                    fontWeight: '700',
-                  }}
-                >
-                  Kamu belum login, harap login untuk history anda
-                </Text>
-                <Pressable
-                  style={{
-                    backgroundColor: '#FFCD61',
-                    borderRadius: 10,
-                    width: 100,
-                    padding: 15,
-                    elevation: 2,
-                  }}
-                  onPress={() => {
-                    setNotLogin(!notLogin);
-
-                    navigation.replace('AuthScreen');
+                    margin: 20,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+                    padding: 35,
+                    alignItems: 'center',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
                   }}
                 >
                   <Text
                     style={{
-                      color: 'black',
-                      fontWeight: 'bold',
+                      marginBottom: 15,
                       textAlign: 'center',
-                      elevation: 2,
+                      color: 'black',
+                      fontSize: 25,
+                      fontFamily: 'Poppins-Regular',
+                      fontWeight: '700',
                     }}
                   >
-                    Ok
+                    Kamu belum login, harap login untuk history anda
                   </Text>
-                </Pressable>
-              </View>
-            </View>
-          </Modal>
+                  <Pressable
+                    style={{
+                      backgroundColor: '#FFCD61',
+                      borderRadius: 10,
+                      width: 100,
+                      padding: 15,
+                      elevation: 2,
+                    }}
+                    onPress={() => {
+                      setNotLogin(!notLogin);
 
-          {/* MODAL IS NAME NULL */}
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={isNameNull}
-            onRequestClose={() => {
-              setIsNameNull(!isNameNull);
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#fff',
+                      navigation.replace('AuthScreen');
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        elevation: 2,
+                      }}
+                    >
+                      Ok
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+            </Modal>
+
+            {/* MODAL IS NAME NULL */}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={isNameNull}
+              onRequestClose={() => {
+                setIsNameNull(!isNameNull);
               }}
             >
               <View
                 style={{
-                  margin: 20,
-                  backgroundColor: 'white',
-                  borderRadius: 20,
-                  padding: 35,
+                  flex: 1,
+                  justifyContent: 'center',
                   alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 4,
-                  elevation: 5,
+                  backgroundColor: '#fff',
                 }}
               >
-                <Text
+                <View
                   style={{
-                    marginBottom: 15,
-                    textAlign: 'center',
-                    color: 'black',
-                    fontSize: 25,
-                    fontFamily: 'Poppins-Regular',
-                    fontWeight: '700',
-                  }}
-                >
-                  Kamu belum mengisi nama kamu, harap update profile kamu dulu
-                  ya ^_^
-                </Text>
-                <Pressable
-                  style={{
-                    backgroundColor: '#FFCD61',
-                    borderRadius: 10,
-                    width: 100,
-                    padding: 15,
-                    elevation: 2,
-                  }}
-                  onPress={() => {
-                    setIsNameNull(!isNameNull);
-
-                    navigation.replace('TabStack');
+                    margin: 20,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+                    padding: 35,
+                    alignItems: 'center',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
                   }}
                 >
                   <Text
                     style={{
-                      color: 'black',
-                      fontWeight: 'bold',
+                      marginBottom: 15,
                       textAlign: 'center',
-                      elevation: 2,
+                      color: 'black',
+                      fontSize: 25,
+                      fontFamily: 'Poppins-Regular',
+                      fontWeight: '700',
                     }}
                   >
-                    Ok
+                    Kamu belum mengisi nama kamu, harap update profile kamu dulu
+                    ya ^_^
                   </Text>
-                </Pressable>
+                  <Pressable
+                    style={{
+                      backgroundColor: '#FFCD61',
+                      borderRadius: 10,
+                      width: 100,
+                      padding: 15,
+                      elevation: 2,
+                    }}
+                    onPress={() => {
+                      setIsNameNull(!isNameNull);
+
+                      navigation.replace('TabStack');
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        elevation: 2,
+                      }}
+                    >
+                      Ok
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
-            </View>
-          </Modal>
+            </Modal>
 
-          <Text
-            style={{
-              textAlign: 'center',
-              color: '#000',
-              padding: 50,
-              // borderWidth: 1,
-              fontFamily: 'Nunito-Regular',
-              fontWeight: '700',
-              fontSize: 28,
-            }}
-          >
-            History Order
-          </Text>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              // borderWidth: 1,
-              padding: 20,
-              paddingStart: '40%',
-              marginBottom: 30,
-            }}
-          >
-            <Text
-              style={{
-                color: 'grey',
-                marginEnd: '40%',
-                fontFamily: 'Nunito-Regular',
-                fontSize: 14,
-                fontWeight: '600',
-              }}
-            >
-              A Week ago
-            </Text>
-            {isSelected ? (
-              <Text
-                style={{
-                  color: 'grey',
-                  fontFamily: 'Nunito-Regular',
-                  fontSize: 14,
-                  fontWeight: '600',
-                }}
-              >
-                Delete
-              </Text>
-            ) : (
-              <Text
-                style={{
-                  color: 'grey',
-                  fontFamily: 'Nunito-Regular',
-                  fontSize: 14,
-                  fontWeight: '600',
-                }}
-              >
-                Select
-              </Text>
-            )}
-          </View>
-
-          {history.length > 0 &&
-            history.map((item, idx) => {
+            {history.map((item, idx) => {
               // console.log('ITEM-BIKE >>> ', item);
               const photo = JSON.parse(item.photo);
 
@@ -421,23 +429,13 @@ const History = ({ navigation }) => {
                       marginStart: 25,
                     }}
                   >
-                    <CheckBox
-                      tintColors={{
-                        true: '#FFCD61',
-                        false: 'grey',
-                      }}
-                      disabled={false}
-                      value={toggleCheckBox}
-                      onValueChange={newValue => {
-                        setToggleCheckBox(newValue);
-                        setIsSelected(!isSelected);
-                      }}
-                    />
+                    <Checkbox />
                   </View>
                 </View>
               );
             })}
-        </ScrollView>
+          </ScrollView>
+        </>
       )}
     </>
   );

@@ -1,4 +1,3 @@
-/* eslint-disable no-alert */
 import {
   Text,
   View,
@@ -55,7 +54,7 @@ const Register = ({ navigation }) => {
   return (
     <ScrollView>
       <Modal
-        title="Register Success, registration is successful, please login"
+        title="Registration is successful, please login"
         onModal={isSuccess}
         navigation={navigation}
         type="register success"

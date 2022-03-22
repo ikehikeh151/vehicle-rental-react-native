@@ -149,7 +149,7 @@ const Profile = ({ navigation }) => {
                 // backgroundColor: 'red',
               }}
             >
-              <View
+              <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   // borderWidth: 1,
@@ -174,9 +174,9 @@ const Profile = ({ navigation }) => {
                   size={18}
                   style={{ color: '#999999' }}
                 />
-              </View>
+              </TouchableOpacity>
 
-              <View
+              <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   // borderWidth: 1,
@@ -201,9 +201,9 @@ const Profile = ({ navigation }) => {
                   size={18}
                   style={{ color: '#999999' }}
                 />
-              </View>
+              </TouchableOpacity>
 
-              <View
+              <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   // borderWidth: 1,
@@ -228,9 +228,9 @@ const Profile = ({ navigation }) => {
                   size={18}
                   style={{ color: '#999999' }}
                 />
-              </View>
+              </TouchableOpacity>
 
-              <View
+              <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   // borderWidth: 1,
@@ -238,7 +238,7 @@ const Profile = ({ navigation }) => {
                   justifyContent: 'space-between',
                   marginBottom: 40,
                 }}
-                onStartShouldSetResponder={() => {
+                onPress={() => {
                   navigation.navigate('UpdateProfileScreen', {
                     profile: profile,
                   });
@@ -260,7 +260,7 @@ const Profile = ({ navigation }) => {
                   size={18}
                   style={{ color: '#999999' }}
                 />
-              </View>
+              </TouchableOpacity>
             </View>
 
             <View

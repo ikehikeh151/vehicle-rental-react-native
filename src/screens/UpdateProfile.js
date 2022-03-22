@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   View,
@@ -105,14 +105,7 @@ const UpdateProfile = ({ navigation, route }) => {
   };
   console.log('BODY', profile.birtday.length);
   return (
-    <ScrollView>
-      <Modal
-        title="Successfully changed your profile"
-        onModal={isSuccessUpdate}
-        type="update profile"
-        navigation={navigation}
-        cb={cbIsSuccessUpdate}
-      />
+    <>
       <View
         style={{
           justifyContent: 'space-between',
@@ -140,394 +133,403 @@ const UpdateProfile = ({ navigation, route }) => {
           Update Profile
         </Text>
       </View>
-
-      <View
-        style={{
-          // borderWidth: 1,
-          marginTop: 30,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <View
-          style={{
-            width: 150,
-            height: 150,
-            borderRadius: 150 / 2,
-            position: 'relative',
-          }}
-        >
-          <Image
-            source={
-              photo !== null
-                ? { uri: photo.uri }
-                : profile.photo === null
-                ? defaultPhoto
-                : { uri: API_URL + profile.photo }
-            }
-            style={{
-              flex: 1,
-              resizeMode: 'cover',
-              width: undefined,
-              height: undefined,
-              borderRadius: 150 / 2,
-            }}
-          />
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              right: 0,
-              bottom: 0,
-              width: 40,
-              height: 40,
-              borderRadius: 20,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#FFCD61',
-            }}
-            onPress={handleChoosePhoto}
-          >
-            <Icon name="plus" style={{ color: 'black' }} />
-          </TouchableOpacity>
-        </View>
+      <ScrollView>
+        <Modal
+          title="Successfully changed your profile"
+          onModal={isSuccessUpdate}
+          type="update profile"
+          navigation={navigation}
+          cb={cbIsSuccessUpdate}
+        />
 
         <View
           style={{
-            flexDirection: 'row',
             // borderWidth: 1,
+            marginTop: 30,
+            justifyContent: 'center',
             alignItems: 'center',
-            marginTop: 20,
-            // marginBottom: 10,
           }}
         >
-          <RadioButton
-            value="first"
-            status={checked === 'Wanita' ? 'checked' : 'unchecked'}
-            onPress={() => setChecked('Wanita')}
-          />
-          <Text
-            style={{
-              color: '#393939',
-              fontFamily: 'Nunito-Regular',
-              fontWeight: '400',
-              lineHeight: 18,
-              fontSize: 14,
-              marginRight: 20,
-            }}
-            onPress={() => setChecked('Wanita')}
-          >
-            Female
-          </Text>
-          <RadioButton
-            value="second"
-            status={checked === 'Pria' ? 'checked' : 'unchecked'}
-            onPress={() => setChecked('Pria')}
-          />
-          <Text
-            style={{
-              color: '#393939',
-              fontFamily: 'Nunito-Regular',
-              fontWeight: '400',
-              lineHeight: 18,
-              fontSize: 14,
-            }}
-            onPress={() => setChecked('Pria')}
-          >
-            Male
-          </Text>
-        </View>
-      </View>
-
-      <View
-        style={{
-          padding: 20,
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: 'Nunito-Regular',
-            fontWeight: '700',
-            color: '#b8b8b8',
-          }}
-        >
-          Name :
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: '#DADADA',
-            marginTop: 20,
-          }}
-        >
-          <TextInput
-            placeholder="Input Name"
-            placeholderTextColor="grey"
-            value={editModeName ? name : profile.name}
-            onFocus={() => {
-              setEditModeName(true);
-            }}
-            onChangeText={text => {
-              setName(text);
-            }}
-            style={{
-              // borderWidth: 1,
-              width: '100%',
-              color: 'black',
-              paddingStart: 20,
-            }}
-          />
-        </View>
-      </View>
-
-      <View
-        style={{
-          padding: 20,
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: 'Nunito-Regular',
-            fontWeight: '700',
-            color: '#b8b8b8',
-          }}
-        >
-          Email Address :
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: '#DADADA',
-            marginTop: 20,
-          }}
-        >
-          <TextInput
-            placeholder="Input Email Address"
-            placeholderTextColor="grey"
-            value={editModeEmail ? email : profile.email}
-            onFocus={() => {
-              setEditModeEmail(true);
-            }}
-            onChangeText={text => {
-              setEmail(text);
-            }}
-            style={{
-              // borderWidth: 1,
-              width: '100%',
-              color: 'black',
-              paddingStart: 20,
-            }}
-          />
-        </View>
-      </View>
-
-      <View
-        style={{
-          padding: 20,
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: 'Nunito-Regular',
-            fontWeight: '700',
-            color: '#b8b8b8',
-          }}
-        >
-          Phone Number :
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: '#DADADA',
-            marginTop: 20,
-          }}
-        >
-          <TextInput
-            placeholder="Input Phone Number"
-            placeholderTextColor="grey"
-            value={editModePhone ? phone : profile.phone}
-            onFocus={() => {
-              setEditModePhone(true);
-            }}
-            onChangeText={text => {
-              setPhone(text);
-            }}
-            style={{
-              // borderWidth: 1,
-              width: '100%',
-              color: 'black',
-              paddingStart: 20,
-            }}
-          />
-        </View>
-      </View>
-
-      <View
-        style={{
-          padding: 20,
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: 'Nunito-Regular',
-            fontWeight: '700',
-            color: '#b8b8b8',
-          }}
-        >
-          Date of Birth :
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: '#DADADA',
-            marginTop: 20,
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              width: '80%',
-              height: 52,
-              borderRadius: 10,
-              // backgroundColor: '#DFDEDE',
-              opacity: 0.8,
-              color: 'black',
-              justifyContent: 'center',
-              paddingStart: 20,
-            }}
-            onPress={() => {
-              setIsDateVisible(true);
-            }}
-          >
-            {selectDate.length > 0 ? (
-              <Text
-                style={{
-                  fontFamily: 'Nunito-Regular',
-                  fontWeight: '400',
-                  color: '#000',
-                }}
-              >
-                {selectDate}
-              </Text>
-            ) : (
-              <Text
-                style={{
-                  fontFamily: 'Nunito-Regular',
-                  fontWeight: '400',
-                  color: '#000',
-                }}
-              >
-                {profile.birtday}
-              </Text>
-            )}
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isDateVisible}
-            mode="date"
-            onConfirm={handleConfirmDate}
-            onCancel={() => {
-              setIsDateVisible(false);
-              setSelectDate('');
-            }}
-          />
           <View
             style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flex: 1,
+              width: 150,
+              height: 150,
+              borderRadius: 150 / 2,
+              position: 'relative',
             }}
           >
-            <Icon
-              name="calendar-day"
-              size={30}
+            <Image
+              source={
+                photo !== null
+                  ? { uri: photo.uri }
+                  : profile.photo === null
+                  ? defaultPhoto
+                  : { uri: API_URL + profile.photo }
+              }
               style={{
-                color: '#DADADA',
+                flex: 1,
+                resizeMode: 'cover',
+                width: undefined,
+                height: undefined,
+                borderRadius: 150 / 2,
+              }}
+            />
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                right: 0,
+                bottom: 0,
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#FFCD61',
+              }}
+              onPress={handleChoosePhoto}
+            >
+              <Icon name="pencil-alt" style={{ color: 'black' }} />
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              // borderWidth: 1,
+              alignItems: 'center',
+              marginTop: 20,
+              // marginBottom: 10,
+            }}
+          >
+            <RadioButton
+              value="first"
+              status={checked === 'Wanita' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('Wanita')}
+            />
+            <Text
+              style={{
+                color: '#393939',
+                fontFamily: 'Nunito-Regular',
+                fontWeight: '400',
+                lineHeight: 18,
+                fontSize: 14,
+                marginRight: 20,
+              }}
+              onPress={() => setChecked('Wanita')}
+            >
+              Female
+            </Text>
+            <RadioButton
+              value="second"
+              status={checked === 'Pria' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('Pria')}
+            />
+            <Text
+              style={{
+                color: '#393939',
+                fontFamily: 'Nunito-Regular',
+                fontWeight: '400',
+                lineHeight: 18,
+                fontSize: 14,
+              }}
+              onPress={() => setChecked('Pria')}
+            >
+              Male
+            </Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            padding: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'Nunito-Regular',
+              fontWeight: '700',
+              color: '#b8b8b8',
+            }}
+          >
+            Name :
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: '#DADADA',
+              marginTop: 20,
+            }}
+          >
+            <TextInput
+              placeholder="Input Name"
+              placeholderTextColor="grey"
+              value={editModeName ? name : profile.name}
+              onFocus={() => {
+                setEditModeName(true);
+              }}
+              onChangeText={text => {
+                setName(text);
+              }}
+              style={{
+                // borderWidth: 1,
+                width: '100%',
+                color: 'black',
+                paddingStart: 20,
               }}
             />
           </View>
         </View>
-      </View>
 
-      <View
-        style={{
-          padding: 20,
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: 'Nunito-Regular',
-            fontWeight: '700',
-            color: '#b8b8b8',
-          }}
-        >
-          Address :
-        </Text>
         <View
           style={{
-            flexDirection: 'row',
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: '#DADADA',
-            marginTop: 20,
+            padding: 20,
           }}
-        >
-          <TextInput
-            placeholder="Input Address"
-            placeholderTextColor="grey"
-            value={editModeAddress ? address : profile.address}
-            onFocus={() => {
-              setEditModeAddress(true);
-            }}
-            onChangeText={text => {
-              setAddress(text);
-            }}
-            style={{
-              // borderWidth: 1,
-              width: '100%',
-              color: 'black',
-              paddingStart: 20,
-            }}
-          />
-        </View>
-      </View>
-
-      <View
-        style={{
-          padding: 20,
-          // backgroundColor: 'red',
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            width: '100%',
-            height: 57,
-            backgroundColor: '#FFCD61',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 10,
-          }}
-          onPress={handleSave}
         >
           <Text
             style={{
-              color: '#393939',
               fontFamily: 'Nunito-Regular',
-              fontWeight: '800',
-              fontSize: 24,
-              lineHeight: 33,
+              fontWeight: '700',
+              color: '#b8b8b8',
             }}
           >
-            Save Change
+            Email Address :
           </Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+          <View
+            style={{
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: '#DADADA',
+              marginTop: 20,
+            }}
+          >
+            <TextInput
+              placeholder="Input Email Address"
+              placeholderTextColor="grey"
+              value={editModeEmail ? email : profile.email}
+              onFocus={() => {
+                setEditModeEmail(true);
+              }}
+              onChangeText={text => {
+                setEmail(text);
+              }}
+              style={{
+                // borderWidth: 1,
+                width: '100%',
+                color: 'black',
+                paddingStart: 20,
+              }}
+            />
+          </View>
+        </View>
+
+        <View
+          style={{
+            padding: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'Nunito-Regular',
+              fontWeight: '700',
+              color: '#b8b8b8',
+            }}
+          >
+            Phone Number :
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: '#DADADA',
+              marginTop: 20,
+            }}
+          >
+            <TextInput
+              placeholder="Input Phone Number"
+              placeholderTextColor="grey"
+              value={editModePhone ? phone : profile.phone}
+              onFocus={() => {
+                setEditModePhone(true);
+              }}
+              onChangeText={text => {
+                setPhone(text);
+              }}
+              style={{
+                // borderWidth: 1,
+                width: '100%',
+                color: 'black',
+                paddingStart: 20,
+              }}
+            />
+          </View>
+        </View>
+
+        <View
+          style={{
+            padding: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'Nunito-Regular',
+              fontWeight: '700',
+              color: '#b8b8b8',
+            }}
+          >
+            Date of Birth :
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: '#DADADA',
+              marginTop: 20,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                width: '80%',
+                height: 52,
+                borderRadius: 10,
+                // backgroundColor: '#DFDEDE',
+                opacity: 0.8,
+                color: 'black',
+                justifyContent: 'center',
+                paddingStart: 20,
+              }}
+              onPress={() => {
+                setIsDateVisible(true);
+              }}
+            >
+              {selectDate.length > 0 ? (
+                <Text
+                  style={{
+                    fontFamily: 'Nunito-Regular',
+                    fontWeight: '400',
+                    color: '#000',
+                  }}
+                >
+                  {selectDate}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    fontFamily: 'Nunito-Regular',
+                    fontWeight: '400',
+                    color: '#000',
+                  }}
+                >
+                  {profile.birtday}
+                </Text>
+              )}
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isDateVisible}
+              mode="date"
+              onConfirm={handleConfirmDate}
+              onCancel={() => {
+                setIsDateVisible(false);
+                setSelectDate('');
+              }}
+            />
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+              }}
+            >
+              <Icon
+                name="calendar-day"
+                size={30}
+                style={{
+                  color: '#DADADA',
+                }}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View
+          style={{
+            padding: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'Nunito-Regular',
+              fontWeight: '700',
+              color: '#b8b8b8',
+            }}
+          >
+            Address :
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: '#DADADA',
+              marginTop: 20,
+            }}
+          >
+            <TextInput
+              placeholder="Input Address"
+              placeholderTextColor="grey"
+              value={editModeAddress ? address : profile.address}
+              onFocus={() => {
+                setEditModeAddress(true);
+              }}
+              onChangeText={text => {
+                setAddress(text);
+              }}
+              style={{
+                // borderWidth: 1,
+                width: '100%',
+                color: 'black',
+                paddingStart: 20,
+              }}
+            />
+          </View>
+        </View>
+
+        <View
+          style={{
+            padding: 20,
+            // backgroundColor: 'red',
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              width: '100%',
+              height: 57,
+              backgroundColor: '#FFCD61',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 10,
+            }}
+            onPress={handleSave}
+          >
+            <Text
+              style={{
+                color: '#393939',
+                fontFamily: 'Nunito-Regular',
+                fontWeight: '800',
+                fontSize: 24,
+                lineHeight: 33,
+              }}
+            >
+              Save Change
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
