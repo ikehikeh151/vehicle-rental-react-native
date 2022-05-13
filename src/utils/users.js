@@ -12,6 +12,16 @@ export const getUserByIdApi = token => {
   return axios.get(url, config);
 };
 
+export const updatePassword = (token, body) => {
+  const config = {
+    headers: {
+      'x-access-token': token,
+    },
+  };
+  const url = API_URL + '/users/update-password';
+  return axios.patch(url, body, config);
+};
+
 export const updateProfileApi = async (body, token) => {
   const url = API_URL + '/users/edit';
   const res = await fetch(url, {

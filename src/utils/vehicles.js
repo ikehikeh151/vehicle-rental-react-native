@@ -20,17 +20,17 @@ export const getVehiclesPopularApi = () => {
 };
 
 export const getVehiclesBikeApi = () => {
-  const url = `${API_URL}/vehicles?sort=desc&by=id&filter=bike`;
+  const url = `${API_URL}/vehicles?filterCategory=bike`;
   return axios.get(url);
 };
 
 export const getVehiclesMotorBikeApi = () => {
-  const url = `${API_URL}/vehicles?sort=desc&by=id&filter=motorbike`;
+  const url = `${API_URL}/vehicles?filterCategory=motorbike`;
   return axios.get(url);
 };
 
 export const getVehiclesCarsApi = () => {
-  const url = `${API_URL}/vehicles?sort=desc&by=id&filter=cars`;
+  const url = `${API_URL}/vehicles?filterCategory=cars`;
   return axios.get(url);
 };
 

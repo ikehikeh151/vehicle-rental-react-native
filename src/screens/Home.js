@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Loading from '../components/Loading';
 import imgBanner from '../assets/Images/banner-home.png';
-import imgProduct from '../assets/Images/noImageVehicle.jpeg';
+import noImageVehicle from '../assets/Images/noImageVehicle.jpeg';
 import {
   getVehiclesCarsApi,
   getVehiclesMotorBikeApi,
@@ -28,11 +28,11 @@ const Home = ({ navigation, route }) => {
   const [motorBike, setMotorBike] = useState([]);
   const [bike, setBike] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [setImgDummy] = useState(false);
+  const [imgDummy, setImgDummy] = useState(false);
   const [search, setSearch] = useState('');
 
-  console.log('ROLE', role);
-  console.log('PARENT =', search);
+  // console.log('ROLE', role);
+  // console.log('PARENT =', search);
 
   const handleOnChangeSearch = newValue => {
     setSearch(newValue);
@@ -82,6 +82,7 @@ const Home = ({ navigation, route }) => {
 
     const unsubcribe = navigation.addListener('focus', () => {
       console.log('Refresh Data ..');
+      console.log('Page Home');
       getBike();
       getCars();
       getMotorBike();
@@ -91,6 +92,8 @@ const Home = ({ navigation, route }) => {
   }, [navigation, getBike, getCars, getMotorBike, setSearch]);
 
   // console.log('CARS', cars);
+  // console.log('MOTORBIKE', motorBike);
+  // console.log('BIKE', bike);
 
   return (
     <>
@@ -226,43 +229,50 @@ const Home = ({ navigation, route }) => {
                 cars.map((item, idx) => {
                   // console.log('ITEM-CARS >>>>', item);
                   const photo = JSON.parse(item.photo);
-                  const img = API_URL + photo[0];
-                  fetch(img).then(res => {
-                    if (res.status === 404) {
-                      setImgDummy(true);
-                    }
-                  });
+                  // console.log(photo);
+                  if (photo !== null) {
+                    // console.log('PHOTO MASUK');
+                    const img = API_URL + photo[0];
 
-                  return (
-                    <View
-                      style={{
-                        width: 265,
-                        height: 168,
-                        borderRadius: 15,
-                        marginRight: 20,
-                        overflow: 'hidden',
-                        borderWidth: 1,
-                        borderColor: '#393939',
-                      }}
-                      key={idx}
-                      onTouchEnd={() => {
-                        navigation.navigate('DetailVehicleScreen', {
-                          id: item.id,
-                        });
-                      }}
-                    >
-                      <Image
-                        onError={() => imgProduct}
-                        source={{ uri: img }}
+                    // console.log('IMAGE PRODUCT', img);
+                    fetch(img).then(res => {
+                      if (res.status === 404) {
+                        setImgDummy(true);
+                      }
+                    });
+                    return (
+                      <View
                         style={{
-                          width: undefined,
-                          height: undefined,
-                          resizeMode: 'cover',
-                          flex: 1,
+                          width: 265,
+                          height: 168,
+                          borderRadius: 15,
+                          marginRight: 20,
+                          overflow: 'hidden',
+                          borderWidth: 1,
+                          borderColor: '#393939',
                         }}
-                      />
-                    </View>
-                  );
+                        key={idx}
+                        onTouchEnd={() => {
+                          navigation.navigate('DetailVehicleScreen', {
+                            id: item.id,
+                          });
+                        }}
+                      >
+                        <Image
+                          onError={() => noImageVehicle}
+                          source={
+                            imgDummy !== null ? { uri: img } : noImageVehicle
+                          }
+                          style={{
+                            width: undefined,
+                            height: undefined,
+                            resizeMode: 'cover',
+                            flex: 1,
+                          }}
+                        />
+                      </View>
+                    );
+                  }
                 })}
             </ScrollView>
           </View>
@@ -324,36 +334,46 @@ const Home = ({ navigation, route }) => {
                 motorBike.map((item, idx) => {
                   const photo = JSON.parse(item.photo);
                   // console.log('ITEM-MOTORBIKE >>>>', item);
-
-                  return (
-                    <View
-                      style={{
-                        width: 265,
-                        height: 168,
-                        borderRadius: 15,
-                        marginRight: 20,
-                        overflow: 'hidden',
-                        borderWidth: 1,
-                        borderColor: '#393939',
-                      }}
-                      key={idx}
-                      onTouchEnd={() => {
-                        navigation.navigate('DetailVehicleScreen', {
-                          id: item.id,
-                        });
-                      }}
-                    >
-                      <Image
-                        source={{ uri: API_URL + photo[0] }}
+                  if (photo !== null) {
+                    const img = API_URL + photo[0];
+                    fetch(img).then(res => {
+                      if (res.status === 404) {
+                        setImgDummy(true);
+                      }
+                    });
+                    return (
+                      <View
                         style={{
-                          width: undefined,
-                          height: undefined,
-                          resizeMode: 'cover',
-                          flex: 1,
+                          width: 265,
+                          height: 168,
+                          borderRadius: 15,
+                          marginRight: 20,
+                          overflow: 'hidden',
+                          borderWidth: 1,
+                          borderColor: '#393939',
                         }}
-                      />
-                    </View>
-                  );
+                        key={idx}
+                        onTouchEnd={() => {
+                          navigation.navigate('DetailVehicleScreen', {
+                            id: item.id,
+                          });
+                        }}
+                      >
+                        <Image
+                          onError={() => noImageVehicle}
+                          source={
+                            imgDummy !== null ? { uri: img } : noImageVehicle
+                          }
+                          style={{
+                            width: undefined,
+                            height: undefined,
+                            resizeMode: 'cover',
+                            flex: 1,
+                          }}
+                        />
+                      </View>
+                    );
+                  }
                 })}
             </ScrollView>
           </View>
@@ -420,36 +440,46 @@ const Home = ({ navigation, route }) => {
                 bike.map((item, idx) => {
                   // console.log('ITEM-BIKE >>>>', item);
                   const photo = JSON.parse(item.photo);
-
-                  return (
-                    <View
-                      style={{
-                        width: 265,
-                        height: 168,
-                        borderRadius: 15,
-                        marginRight: 20,
-                        overflow: 'hidden',
-                        borderWidth: 1,
-                        borderColor: '#393939',
-                      }}
-                      key={idx}
-                      onTouchEnd={() => {
-                        navigation.navigate('DetailVehicleScreen', {
-                          id: item.id,
-                        });
-                      }}
-                    >
-                      <Image
-                        source={{ uri: API_URL + photo[0] }}
+                  if (photo !== null) {
+                    const img = API_URL + photo[0];
+                    fetch(img).then(res => {
+                      if (res.status === 404) {
+                        setImgDummy(true);
+                      }
+                    });
+                    return (
+                      <View
                         style={{
-                          width: undefined,
-                          height: undefined,
-                          resizeMode: 'cover',
-                          flex: 1,
+                          width: 265,
+                          height: 168,
+                          borderRadius: 15,
+                          marginRight: 20,
+                          overflow: 'hidden',
+                          borderWidth: 1,
+                          borderColor: '#393939',
                         }}
-                      />
-                    </View>
-                  );
+                        key={idx}
+                        onTouchEnd={() => {
+                          navigation.navigate('DetailVehicleScreen', {
+                            id: item.id,
+                          });
+                        }}
+                      >
+                        <Image
+                          onError={() => noImageVehicle}
+                          source={
+                            imgDummy !== null ? { uri: img } : noImageVehicle
+                          }
+                          style={{
+                            width: undefined,
+                            height: undefined,
+                            resizeMode: 'cover',
+                            flex: 1,
+                          }}
+                        />
+                      </View>
+                    );
+                  }
                 })}
             </ScrollView>
           </View>

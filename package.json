@@ -6,6 +6,7 @@
     "android": "npx react-native run-android",
     "ios": "npx react-native run-ios",
     "start": "npx react-native start",
+    "vehicle": "npx react-native start --openssl-legacy-provider start",
     "test": "jest",
     "lint": "eslint ."
   },
@@ -21,7 +22,7 @@
     "axios": "^0.26.0",
     "jwt-decode": "^3.1.2",
     "react": "17.0.2",
-    "react-native": "0.67.2",
+    "react-native": "0.68.2",
     "react-native-dotenv": "^3.3.1",
     "react-native-dropdown-picker": "^5.3.0",
     "react-native-elements": "^3.4.2",

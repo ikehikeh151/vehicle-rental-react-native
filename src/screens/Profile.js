@@ -261,6 +261,38 @@ const Profile = ({ navigation }) => {
                   style={{ color: '#999999' }}
                 />
               </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  // borderWidth: 1,
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 40,
+                }}
+                onPress={() => {
+                  navigation.navigate('UpdatePasswordScreen', {
+                    profile: profile,
+                  });
+                }}
+              >
+                <Text
+                  style={{
+                    color: '#393939',
+                    fontFamily: 'Nunito-Regular',
+                    fontWeight: '700',
+                    lineHeight: 25,
+                    fontSize: 18,
+                  }}
+                >
+                  Update Password
+                </Text>
+                <Icon
+                  name="chevron-right"
+                  size={18}
+                  style={{ color: '#999999' }}
+                />
+              </TouchableOpacity>
             </View>
 
             <View

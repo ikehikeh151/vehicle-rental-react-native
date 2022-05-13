@@ -24,6 +24,7 @@ import UpdateProfile from './screens/UpdateProfile';
 import Loading from './components/Loading';
 import SearchVehicle from './screens/SearchVehicle';
 import FilterVehicle from './screens/FilterVehicle';
+import UpdatePassword from './screens/UpdatePassword';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -77,6 +78,7 @@ const TabProfile = () => {
       <Stack.Screen name="ProfileScreen" component={Profile} />
       <Stack.Screen name="FavoriteScreen" component={DetailVehicle} />
       <Stack.Screen name="UpdateProfileScreen" component={UpdateProfile} />
+      <Stack.Screen name="UpdatePasswordScreen" component={UpdatePassword} />
       <Stack.Screen name="NotLoginScreen" component={NotLogin} />
     </Stack.Navigator>
   );
